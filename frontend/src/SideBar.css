@@ -1,0 +1,51 @@
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 80px; /* Set the width */
+  padding: 10px, 15px;
+  background-color: #1e2328; /* Dark background color */
+}
+
+.sidebar h2 {
+  color: white;
+  text-align: center;
+}
+
+.sidebar ul {
+  list-style-type: none; /* Remove default bullets */
+  padding: 0;
+}
+
+.sidebar ul li {
+  padding: 15px;
+  text-align: center;
+}
+
+.sidebar ul li a {
+  color: white;
+  text-decoration: none; /* Remove underline */
+  display: block; /* Make links fill the container */
+  transition: 0.3s;
+}
+
+.sidebar ul li a:hover {
+  filter: brightness(0.8);
+}
+.sidebar-logo {
+  font-family: Staatliches;
+  font-size: 3rem;
+  font-weight: bold;
+  color: black;
+}
+
+.sidebar-logo-img {
+  width: 60px;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 10px;
+  margin-top: 3px;
+}

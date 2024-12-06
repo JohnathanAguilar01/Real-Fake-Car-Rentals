@@ -1,0 +1,75 @@
+.navbar {
+  position: fixed;
+  left: 80px;
+  right: 0;
+  top: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 50px;
+  padding: 1rem 1.75rem;
+  background-color: #3b3f46;
+  border: none;
+}
+
+.navbar-links {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+}
+
+.navbar-links a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.navbar-links a:hover {
+  text-decoration: underline;
+}
+
+.navbar-button {
+  font-family: Staatliches;
+  font-size: 22px;
+  width: 120px;
+  height: 50px;
+  color: white;
+  background-color: #efbe25;
+  border-radius: 5px;
+  border: none;
+  box-shadow: none;
+  outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.navbar-button:hover {
+  filter: brightness(0.8);
+}
+
+.navbar-actcir {
+  width: 40px;
+  height: auto;
+}
+
+.navbar-span {
+  display: inline-block;
+  line-height: 27px;
+  position: relative;
+  top: 2px;
+}
+
+.navbar h1 {
+  font-family: Staatliches;
+  color: white;
+}
+
+.navbar-name {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0px;
+}

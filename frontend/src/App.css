@@ -1,0 +1,29 @@
+@font-face {
+  font-family: "Staatliches";
+  src: url("./fonts/Staatliches-Regular.ttf") format("truetype");
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.App-layout {
+  display: flex;
+  flex: 1;
+}
+
+.App-searchbar {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.App-navwrapper {
+  height: 80px;
+}
+
+.App-sidebarwrapper {
+  width: 80px;
+}
