@@ -15,21 +15,23 @@ function VehicleDisplay() {
   return (
     <div className="vehicle-display" id="vehicle-display">
       <h2>Search Results:</h2>
-      <div className="vehicle-display-list">
-        {vehicles.map((vehicle) => (
-          <VehicleCard
-            key={vehicle.CarID} // Ensure a unique key
-            carid={vehicle.CarID}
-            mileage={vehicle.Mileage}
-            mpg={vehicle.MPG}
-            price={vehicle.Price}
-            carYear={vehicle.CarYear}
-            model={vehicle.Model}
-            make={vehicle.Make}
-            color={vehicle.Color}
-            carType={vehicle.CarType}
-          />
-        ))}
+      <div className="vehicle-display-list-container">
+        <div className="vehicle-display-list">
+          {vehicles.map((vehicle) => (
+            <VehicleCard
+              key={vehicle.CarID} // Ensure a unique key
+              carid={vehicle.CarID}
+              mileage={vehicle.Mileage}
+              mpg={vehicle.MPG}
+              price={vehicle.Price}
+              carYear={vehicle.CarYear}
+              model={vehicle.Model}
+              make={vehicle.Make}
+              color={vehicle.Color}
+              carType={vehicle.CarType}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

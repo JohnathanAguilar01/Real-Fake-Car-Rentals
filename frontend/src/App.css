@@ -11,27 +11,34 @@
 
 .App-layout {
   display: flex;
-  flex: 1;
+  margin-top: 32px;
+  margin-left: 80px;
 }
 
 .App-navwrapper {
-  height: 80px;
+  min-height: 50px;
+  min-width: 800px;
 }
 
 .App-sidebarwrapper {
   width: 80px;
+  min-width: 80px;
 }
 
 .App-searchbar {
   display: flex;
   position: fixed;
+  background-color: white;
   justify-content: center;
-  height: 80px;
+  height: 55px;
   width: 100%;
+  min-width: 600px;
 }
 
 .App-content {
   width: 100%;
   margin-top: 40px;
   margin-left: 20px;
+  margin-right: 20px;
+  margin-bottom: 20px;
 }

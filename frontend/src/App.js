@@ -11,10 +11,10 @@ function App() {
       <div className="App-navwrapper">
         <Navbar />
       </div>
+      <div className="App-sidebarwrapper">
+        <SideBar />
+      </div>
       <div className="App-layout">
-        <div className="App-sidebarwrapper">
-          <SideBar />
-        </div>
         <div className="App-searchbar">
           <SearchBar />
         </div>
