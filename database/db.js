@@ -1,4 +1,4 @@
-require("dotenv").config();
+require("dotenv").config({ path: "../.env" });
 
 const mysql = require("mysql2");
 
@@ -15,4 +15,15 @@ const pool = mysql.createPool({
 
 // Export a promise-based connection for easier use
 const db = pool.promise();
+
+// Test the connection
+pool.getConnection((err, connection) => {
+  if (err) {
+    console.error("Error connecting to MySQL pool:", err);
+  } else {
+    console.log("Successfully connected to MySQL pool.");
+    connection.release(); // Release the connection back to the pool
+  }
+});
+
 module.exports = db;

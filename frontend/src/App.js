@@ -2,6 +2,7 @@ import Navbar from "./NavBar.js";
 import React from "react";
 import SideBar from "./SideBar.js";
 import SearchBar from "./SearchBar.js";
+import VehicleDisplay from "./VehicleDisplay.js";
 import "./App.css";
 
 function App() {
@@ -16,6 +17,9 @@ function App() {
         </div>
         <div className="App-searchbar">
           <SearchBar />
+        </div>
+        <div className="App-content">
+          <VehicleDisplay />
         </div>
       </div>
     </div>

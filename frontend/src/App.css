@@ -14,16 +14,24 @@
   flex: 1;
 }
 
-.App-searchbar {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-}
-
 .App-navwrapper {
   height: 80px;
 }
 
 .App-sidebarwrapper {
   width: 80px;
+}
+
+.App-searchbar {
+  display: flex;
+  position: fixed;
+  justify-content: center;
+  height: 80px;
+  width: 100%;
+}
+
+.App-content {
+  width: 100%;
+  margin-top: 40px;
+  margin-left: 20px;
 }

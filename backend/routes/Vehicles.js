@@ -1,7 +1,9 @@
-const db = require("../database/db");
+const express = require("express");
+const router = express.Router();
+const db = require("../../database/db");
 
 // Example: Fetch all users
-app.get("/Vehicles", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const [rows] = await db.query("SELECT * FROM Vehicles");
     res.json(rows);
@@ -10,3 +12,5 @@ app.get("/Vehicles", async (req, res) => {
     res.status(500).send("Server error");
   }
 });
+
+module.exports = router;
