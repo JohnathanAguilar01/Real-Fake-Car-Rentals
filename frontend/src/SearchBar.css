@@ -9,7 +9,7 @@
   font-family: Staatliches;
   font-size: 22px;
   width: 120px;
-  height: 35px;
+  height: 40px;
   color: white;
   background-color: #efbe25;
   border-radius: 5px;
@@ -25,4 +25,8 @@
 .SearchBar-daterangepicker {
   margin-top: 10px;
   outline: none;
+}
+
+.SearchBar-type {
+  margin-top: 10px;
 }

@@ -2,11 +2,13 @@ import React, { useState, useEffect } from "react";
 import VehicleCard from "./VehicleCard.js";
 import "./VehicleDisplay.css";
 
-function VehicleDisplay() {
+function VehicleDisplay({ StartDate, EndDate, Type }) {
   const [vehicles, setVechicles] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/Vehicles")
+    fetch(
+      `http://localhost:5000/Vehicles/AvailableVehicles/${StartDate}/${EndDate}/${Type}`,
+    )
       .then((response) => response.json())
       .then((data) => setVechicles(data))
       .catch((error) => console.error("Error fetching vehicle data:", error));
