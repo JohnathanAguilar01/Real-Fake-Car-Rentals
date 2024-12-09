@@ -9,14 +9,10 @@ function Navbar() {
       <div className="navbar-name">
         <h1>Real Fake Car Rentals</h1>
       </div>
-      <ul className="navbar-links">
-        <li>
-          <button className="navbar-button">
-            <MdAccountCircle className="navbar-actcir" />
-            <span className="navbar-span">Login</span>
-          </button>
-        </li>
-      </ul>
+      <button className="navbar-button">
+        <MdAccountCircle className="navbar-actcir" />
+        <span className="navbar-span">Login</span>
+      </button>
     </nav>
   );
 }

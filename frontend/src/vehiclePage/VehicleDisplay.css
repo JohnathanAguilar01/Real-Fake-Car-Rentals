@@ -1,10 +1,31 @@
 .vehicle-display {
-  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.vehicle-display-searchbar {
+  display: flex;
+  position: fixed;
+  width: 100%;
+  background-color: white;
+  align-items: center;
+  justify-content: center;
+  height: 60px;
+  min-width: 600px;
 }
 
 .vehicle-display h2 {
   font-size: max(2vmin, 24px); /* Fixed unit typo */
   font-weight: 600;
+  margin-right: auto;
+}
+
+.vehicle-display-list {
+  width: 100%;
+  margin-top: 30px;
+  padding: 10px;
 }
 
 .vehicle-display-list-container {
@@ -12,12 +33,11 @@
   width: 100%;
 }
 
-.vehicle-display-list {
+.vehicle-display-grid {
   display: grid;
   width: 100%;
   grid-template-columns: repeat(auto-fit, minmax(1000px, auto));
   justify-content: center;
-  margin-top: 30px;
   gap: 20px; /* Consolidated row-gap and gap */
   padding: 20px;
   margin: 0 auto;

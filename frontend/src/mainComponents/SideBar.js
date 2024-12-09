@@ -1,23 +1,29 @@
 import React from "react";
-import "./SideBar.css";
+import { useNavigate } from "react-router-dom";
 import { FaHome } from "react-icons/fa";
 import { FaTable } from "react-icons/fa";
+import "./SideBar.css";
 
 function SideBar() {
+  const navigate = useNavigate();
+  const goToHome = () => {
+    navigate("/");
+  };
+
   return (
     <div className="sidebar">
-      <div className="sidebar-logo">
-        <img
-          src="/QuarterLogo.png"
-          alt="J.E.N.I."
-          className="sidebar-logo-img"
-        />
-      </div>
       <ul>
+        <li className="sidebar-logo">
+          <img
+            src="/QuarterLogo.png"
+            alt="J.E.N.I."
+            className="sidebar-logo-img"
+          />
+        </li>
         <li>
-          <a href="#home">
+          <button onClick={goToHome}>
             <FaHome size={30} />
-          </a>
+          </button>
         </li>
         <li>
           <a href="#table">

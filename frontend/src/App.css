@@ -4,41 +4,11 @@
 }
 
 .App {
-  display: flex;
-  flex-direction: column;
+  width: 100vw;
   height: 100vh;
 }
-
-.App-layout {
-  display: flex;
-  margin-top: 32px;
-  margin-left: 80px;
-}
-
-.App-navwrapper {
-  min-height: 50px;
-  min-width: 800px;
-}
-
-.App-sidebarwrapper {
-  width: 80px;
-  min-width: 80px;
-}
-
-.App-searchbar {
-  display: flex;
-  position: fixed;
-  background-color: white;
-  justify-content: center;
-  height: 55px;
+.App-vehicle-display {
   width: 100%;
-  min-width: 600px;
-}
-
-.App-content {
-  width: 100%;
-  margin-top: 40px;
-  margin-left: 20px;
-  margin-right: 20px;
-  margin-bottom: 20px;
+  height: 100%;
+  border: 3px solid red;
 }
