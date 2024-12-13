@@ -27,7 +27,7 @@ function SearchBar({ onSearch }) {
 
   return (
     <div className="SearchBar">
-      <div class="SearchBar-daterange">
+      <div className="SearchBar-daterange">
         <DateRange datesChanged={handleDateChange} />
       </div>
       <div className="SearchBar-type">

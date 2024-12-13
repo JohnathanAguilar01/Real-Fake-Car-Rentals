@@ -6,7 +6,7 @@ import "./Layout.css";
 function Layout({ children }) {
   return (
     <div className="Layout">
-      <div class="Layout-sidebar-wrapper">
+      <div className="Layout-sidebar-wrapper">
         <SideBar />
       </div>
       <div className="Layout-nav-wrapper">
