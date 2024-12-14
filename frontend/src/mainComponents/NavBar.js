@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import "./NavBar.css"; // Import CSS for styling
 import { MdAccountCircle } from "react-icons/md";
+import Modal from "../userAuth/Modal.js";
 import Login from "../userAuth/Login.js";
 
 function Navbar() {
@@ -16,9 +17,9 @@ function Navbar() {
         <MdAccountCircle className="navbar-actcir" />
         <span className="navbar-span">Login</span>
       </button>
-      <Login open={isOpen} onClose={() => setIsOpen(false)}>
-        This is Login
-      </Login>
+      <Modal open={isOpen} onClose={() => setIsOpen(false)}>
+        <Login />
+      </Modal>
     </nav>
   );
 }
