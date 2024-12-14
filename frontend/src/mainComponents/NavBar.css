@@ -10,41 +10,6 @@
   border: none;
 }
 
-.navbar-button {
-  font-family: Staatliches;
-  font-size: 22px;
-  width: 120px;
-  height: 40px;
-  color: white;
-  background-color: #efbe25;
-  border-radius: 5px;
-  border: none;
-  box-shadow: none;
-  outline: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 10px 20px;
-  cursor: pointer;
-}
-
-.navbar-button:hover {
-  filter: brightness(0.8);
-}
-
-.navbar-actcir {
-  width: 40px;
-  height: auto;
-}
-
-.navbar-span {
-  display: inline-block;
-  line-height: 27px;
-  position: relative;
-  top: 2px;
-}
-
 .navbar h1 {
   font-family: Staatliches;
   color: white;

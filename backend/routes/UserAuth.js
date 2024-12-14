@@ -1,16 +1,17 @@
 const express = require("express");
-const bodyParser = require("body-parser");
-const cookieParser = require("cookie-parser");
+const bodyparser = require("body-parser");
+const cookieparser = require("cookie-parser");
+const crypto = require("crypto");
 const router = express.Router();
 
-router.use(bodyParser.json());
-router.use(cookieParser());
+router.use(bodyparser.json());
+router.use(cookieparser());
 
 const users = [{ user: "johnnyaguilar", pw: "password" }];
 const sessions = new Map();
 
 // check to see if login credentials are correct
-function credentialsCheck(username, password) {
+function credentialscheck(username, password) {
   var foo = true;
   user = users.find((user) => user.user === username && user.pw === password);
   if (!user) {
@@ -19,88 +20,90 @@ function credentialsCheck(username, password) {
   return foo;
 }
 
-// generate a random UID
+// generate a random uid
 function generateSessionId() {
   return crypto.randomUUID();
 }
 
 // updates the expire time for a session or makes a new one if no session exists
 function createOrUpdateSession(username, inputSessionsId = null) {
-  // set expiresAt to 2 days
+  // Set expiration time to 2 days from now
   const expiresAt = Date.now() + 1000 * 60 * 60 * 24 * 2;
 
-  if (inputSessionsId) {
-    const sessionsId = inputSessionsId;
-  } else {
-    const sessionsId = generateSessionId();
-  }
+  // Use provided session ID or generate a new one
+  let sessionsId = inputSessionsId || generateSessionId();
 
+  // Store session in the sessions map
   sessions.set(sessionsId, { username, expiresAt });
+
   return sessionsId;
 }
 
 // function to remove all expired sessions
-function removeExpiredSessions() {
-  const currentDate = Date.now();
-  for (let [sessionsId, session] of sessions) {
-    if (session.expiresAt < currentDate) {
-      sessions.delete(sessionsId);
+function removeexpiredsessions() {
+  const currentdate = date.now();
+  for (let [sessionsid, session] of sessions) {
+    if (session.expiresat < currentdate) {
+      sessions.delete(sessionsid);
     }
   }
 }
 
-// Middleware to refresh a session
-function refreshSession(req, res, next) {
-  removeExpiredSessions();
+// middleware to refresh a session
+function refreshsession(req, res, next) {
+  removeexpiredsessions();
 
-  const sessionId = req.cookies.sessionId;
-  const session = sessions.get(sessionsId);
+  const sessionid = req.cookies.sessionid;
+  const session = sessions.get(sessionid);
 
   if (session) {
-    createOrUpdateSession(session.username, sessionsId);
+    createorupdatesession(session.username, sessionsid);
     req.user = session;
   }
 
   next();
 }
 
-// Middleware to check if user is logged in
-function authCheck(req, res, next) {
-  const sessionId = req.cookies.sessionId;
-  const session = sessions.get(sessionId);
+// middleware to check if user is logged in
+function authcheck(req, res, next) {
+  const sessionid = req.cookies.sessionid;
+  const session = sessions.get(sessionid);
 
   if (session) {
     req.user = session;
     next();
   } else {
-    res.status(401).send("Incorrect User Credentials");
+    res.status(401).send("incorrect user credentials");
   }
 }
 
 // login end point
 router.post("/login", (req, res) => {
   const { username, password } = req.body;
-  const credentialsCheck = credentialsCheck(username, password);
+  const isvalid = credentialscheck(username, password);
+  console.log(isvalid);
 
-  if (credentialsCheck) {
-    const sessionId = createOrUpdateSession(username);
-    res.cookie("sessionId", sessionId, {
+  if (isvalid) {
+    const sessionid = createOrUpdateSession(username);
+    res.cookie("sessionid", sessionid, {
       secure: true,
-      httpOnly: true,
-      sameSite: "none",
+      httponly: true,
+      samesite: "none",
     });
     res.json({ user: { username } });
   } else {
-    send.status(401).send("Incorrect User Information");
+    res.status(401).send("Incorrect User Information");
   }
 });
 
 // logout end point
 router.post("/logout", (req, res) => {
-  const sessionId = req.cookies.sessionId;
-  if (sessionId) {
-    sessions.delete(sessionId);
+  const sessionid = req.cookies.sessionid;
+  if (sessionid) {
+    sessions.delete(sessionid);
   }
-  res.clearCookie(sessionId);
-  res.sendStatus(200);
+  res.clearCookie("sessionId");
+  res.sendstatus(200);
 });
+
+module.exports = router;

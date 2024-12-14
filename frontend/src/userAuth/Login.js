@@ -7,12 +7,35 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import "./Login.css";
 
-function Login() {
+function Login({ setIsShown }) {
   const [showPassword, setShowPassword] = useState(false);
+  const [username, setUsername] = useState(null);
+  const [password, setPassword] = useState(null);
 
   const handleTogglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
   };
+
+  function onLogin() {
+    fetch("http://localhost:5000/UserAuth/login", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "content-Type": "application/json",
+      },
+      body: JSON.stringify({ username, password }),
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Network response was not ok");
+        } else {
+          setIsShown();
+        }
+        return res.text();
+      })
+      .then((data) => console.log(data))
+      .catch((error) => console.error("Error Validating Credentials:", error));
+  }
 
   return (
     <>
@@ -29,7 +52,14 @@ function Login() {
             noValidate
             autoComplete="off"
           >
-            <TextField id="username" label="Username" variant="outlined" />
+            <TextField
+              id="username"
+              label="Username"
+              variant="outlined"
+              onChange={(foo) => {
+                setUsername(foo.target.value);
+              }}
+            />
           </Box>
           <Box
             component="form"
@@ -43,6 +73,9 @@ function Login() {
               id="password"
               label="Password"
               variant="outlined"
+              onChange={(foo) => {
+                setPassword(foo.target.value);
+              }}
               type={showPassword ? "text" : "password"}
               InputProps={{
                 endAdornment: (
@@ -59,7 +92,12 @@ function Login() {
             />
           </Box>
         </div>
-        <button className="login-button">Login</button>
+        <div className="login-buttons">
+          <button className="login-login-button" onClick={onLogin}>
+            Login
+          </button>
+          <button className="login-signup-button">Sign Up</button>
+        </div>
       </div>
     </>
   );
