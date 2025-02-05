@@ -7,7 +7,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import "./Login.css";
 
-function Login({ setIsShown }) {
+function Login({ setIsShown, onClose }) {
   const [showPassword, setShowPassword] = useState(false);
   const [username, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
@@ -30,6 +30,7 @@ function Login({ setIsShown }) {
           throw new Error("Network response was not ok");
         } else {
           setIsShown();
+          onClose();
         }
         return res.text();
       })

@@ -22,7 +22,7 @@ function Navbar() {
         Sign Out
       </AccountButton>
       <Modal open={isOpen} onClose={() => setIsOpen(false)}>
-        <Login setIsShown={setIsShown} />
+        <Login setIsShown={setIsShown} onClose={() => setIsOpen(false)} />
       </Modal>
     </nav>
   );
