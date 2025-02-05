@@ -96,6 +96,10 @@ router.post("/login", (req, res) => {
   }
 });
 
+router.post("/authCheck", authcheck, (req, res) => {
+  res.sendStatus(200);
+});
+
 // logout end point
 router.post("/logout", (req, res) => {
   const sessionid = req.cookies.sessionid;
@@ -103,7 +107,7 @@ router.post("/logout", (req, res) => {
     sessions.delete(sessionid);
   }
   res.clearCookie("sessionId");
-  res.sendstatus(200);
+  res.sendStatus(200);
 });
 
 module.exports = router;

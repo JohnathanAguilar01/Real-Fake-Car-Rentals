@@ -10,6 +10,21 @@ function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isShown, setIsShown] = useState(true);
 
+  fetch("http://localhost:5000/UserAuth/authCheck", {
+    method: "POST",
+    credentials: "include",
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error("Network response was not ok");
+      } else {
+        setIsShown();
+      }
+      return res.text();
+    })
+    .then((data) => console.log(data))
+    .catch((error) => console.error("Error Validating Credentials:", error));
+
   return (
     <nav className="navbar">
       <div className="navbar-name">
