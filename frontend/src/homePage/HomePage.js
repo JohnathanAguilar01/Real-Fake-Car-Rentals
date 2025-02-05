@@ -21,7 +21,7 @@ const HomePage = () => {
           alt="car banner"
         />
         <div className="homepage-banner-content">
-          <h1>REAL FAKE CAR RENTALS</h1>
+          <h1 className="homepage-banner-text">REAL FAKE CAR RENTALS</h1>
           <div className="homepage-banner-button-wrapper">
             <button className="homepage-banner-button" onClick={goToSearch}>
               RENT NOW

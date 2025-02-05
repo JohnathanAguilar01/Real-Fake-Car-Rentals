@@ -43,6 +43,11 @@
   font-size: 120px;
   margin: 0;
 }
+
+.homepage-banner-text {
+  white-space: nowrap;
+}
+
 .homepage-banner-button-wrapper {
   display: flex;
   justify-content: center;
