@@ -29,6 +29,7 @@ function VehicleCard({
       </div>
       <div className="vehicle-card-price">
         <h3>Price: ${parseFloat(price).toFixed(2)}</h3>
+        <button className="vehicle-card-rent">Rent</button>
       </div>
     </div>
   );
