@@ -7,7 +7,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import "./Login.css";
 
-function Login({ setIsShown, onClose }) {
+function Login({ setIsShown, onClose, onSignUp }) {
   const [showPassword, setShowPassword] = useState(false);
   const [username, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
@@ -103,11 +103,14 @@ function Login({ setIsShown, onClose }) {
             />
           </Box>
         </div>
-        <div className="login-buttons">
-          <button className="login-login-button" onClick={onLogin}>
-            Login
-          </button>
-          <button className="login-signup-button">Sign Up</button>
+        <button className="login-button" onClick={onLogin}>
+          Login
+        </button>
+        <div className="login-signup-feild">
+          <p>New user?</p>
+          <p className="login-signup-button" onClick={onSignUp}>
+            Sign Up
+          </p>
         </div>
       </div>
     </>

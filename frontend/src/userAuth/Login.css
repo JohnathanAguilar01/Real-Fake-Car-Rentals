@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=League+Spartan:wght@300;400;500;600;700;800;900&display=swap");
+
 .login {
   display: flex;
   justify-content: center;
@@ -36,19 +38,14 @@
   align-self: center;
 }
 
-.login-buttons {
-  display: flex;
-  gap: 10px;
-}
-
-.login-login-button:hover {
+.login-button:hover {
   filter: brightness(0.8);
 }
 
-.login-login-button {
+.login-button {
   font-family: Staatliches;
   font-size: 22px;
-  width: 120px;
+  width: 400px;
   height: 40px;
   color: white;
   background-color: #efbe25;
@@ -56,33 +53,27 @@
   border: none;
   box-shadow: none;
   outline: none;
-  display: flex;
+  display: block;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 10px 20px;
+  padding: 8px;
   cursor: pointer;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.login-signup-feild {
+  font-family: "League Spartan", sans-serif !important;
+  display: flex;
 }
 
 .login-signup-button:hover {
   filter: brightness(0.8);
+  text-decoration: underline;
 }
 
 .login-signup-button {
-  font-family: Staatliches;
-  font-size: 22px;
-  width: 120px;
-  height: 40px;
-  color: white;
-  background-color: #efbe25;
-  border-radius: 5px;
-  border: none;
-  box-shadow: none;
-  outline: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 10px 20px;
-  cursor: pointer;
+  color: red;
+  padding-left: 4px;
 }

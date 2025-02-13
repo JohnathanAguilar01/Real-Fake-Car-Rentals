@@ -2,13 +2,20 @@
 import React, { useState } from "react";
 import "./NavBar.css"; // Import CSS for styling
 import { MdAccountCircle } from "react-icons/md";
-import Modal from "../userAuth/Modal.js";
+import Modal from "../mainComponents/Modal.js";
 import Login from "../userAuth/Login.js";
+import SignUp from "../userAuth/SignUp.js";
 import AccountButton from "./AccountButton.js";
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isShown, setIsShown] = useState(true);
+  const [isSignUp, setIsSignUp] = useState(false);
+
+  function onClose() {
+    setIsOpen(false);
+    setIsSignUp(false);
+  }
 
   fetch("http://localhost:5000/UserAuth/authCheck", {
     method: "POST",
@@ -36,8 +43,16 @@ function Navbar() {
       <AccountButton setIsOpen={setIsOpen} isShown={!isShown}>
         Sign Out
       </AccountButton>
-      <Modal open={isOpen} onClose={() => setIsOpen(false)}>
-        <Login setIsShown={setIsShown} onClose={() => setIsOpen(false)} />
+      <Modal open={isOpen} onClose={() => onClose()}>
+        {isSignUp ? (
+          <SignUp></SignUp>
+        ) : (
+          <Login
+            setIsShown={setIsShown}
+            onClose={() => onClose()}
+            onSignUp={() => setIsSignUp(!isSignUp)}
+          />
+        )}
       </Modal>
     </nav>
   );
