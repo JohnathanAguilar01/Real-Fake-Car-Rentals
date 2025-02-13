@@ -11,6 +11,7 @@ function Login({ setIsShown, onClose }) {
   const [showPassword, setShowPassword] = useState(false);
   const [username, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
+  const [isInputRight, setIsInputRight] = useState(true);
 
   const handleTogglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
@@ -27,10 +28,15 @@ function Login({ setIsShown, onClose }) {
     })
       .then((res) => {
         if (!res.ok) {
+          setIsInputRight(false);
           throw new Error("Network response was not ok");
         } else {
           setIsShown();
+<<<<<<< Updated upstream
           onClose();
+=======
+          setIsInputRight(true);
+>>>>>>> Stashed changes
         }
         return res.text();
       })
@@ -44,6 +50,13 @@ function Login({ setIsShown, onClose }) {
         <div className="login-logo">
           <img className="login-logo-img" src="/HalfLogo.png" alt="logo" />
         </div>
+        {!isInputRight && (
+          <input
+            type="text"
+            placeholder="Invalid username or password."
+            className="login-wrong-input"
+          />
+        )}
         <div className="login-textfeild">
           <Box
             component="form"

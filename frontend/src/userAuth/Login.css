@@ -26,6 +26,10 @@
   gap: 10px;
 }
 
+.login-login-button:hover {
+  filter: brightness(0.8);
+}
+
 .login-login-button {
   font-family: Staatliches;
   font-size: 22px;
@@ -43,6 +47,10 @@
   gap: 8px;
   padding: 10px 20px;
   cursor: pointer;
+}
+
+.login-signup-button:hover {
+  filter: brightness(0.8);
 }
 
 .login-signup-button {
