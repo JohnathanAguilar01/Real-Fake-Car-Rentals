@@ -32,11 +32,8 @@ function Login({ setIsShown, onClose }) {
           throw new Error("Network response was not ok");
         } else {
           setIsShown();
-<<<<<<< Updated upstream
           onClose();
-=======
           setIsInputRight(true);
->>>>>>> Stashed changes
         }
         return res.text();
       })

@@ -16,6 +16,21 @@
   height: auto;
 }
 
+.login-wrong-input {
+  width: 100%; /* Makes it fill the width */
+  max-width: 400px; /* Keeps it from getting too wide */
+  padding: 10px;
+  font-size: 16px;
+  text-align: center; /* Centers the text inside */
+  border-radius: 8px;
+  margin-top: 10px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  border: none;
+  color: red;
+}
+
 .login-textfeild {
   display: grid;
   align-self: center;
