@@ -37,7 +37,7 @@ router.post("/RentVehicle", (req, res) => {
   const { startDate, endDate, insurance, customerID, vechileID } = req.body;
 
   const foo =
-    "INSERT INTO Reservations (StartDate, EndDate, Insurance, CustomerID, Vechile)" +
+    "INSERT INTO Reservations (StartDate, EndDate, Insurance, CustomerID, Vehicle)" +
     "VALUES (?, ?, ?, ?, ?)";
   const values = [startDate, endDate, insurance, customerID, vechileID];
 

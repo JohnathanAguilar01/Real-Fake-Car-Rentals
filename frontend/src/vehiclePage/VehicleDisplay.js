@@ -58,6 +58,8 @@ function VehicleDisplay() {
                   make={vehicle.Make}
                   color={vehicle.Color}
                   carType={vehicle.CarType}
+                  startDate={StartDate}
+                  endDate={EndDate}
                 />
               ))}
             </div>
