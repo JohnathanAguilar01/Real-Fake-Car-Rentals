@@ -2,13 +2,16 @@ const express = require("express");
 const bodyparser = require("body-parser");
 const cookieparser = require("cookie-parser");
 const crypto = require("crypto");
+const bcrypt = require("bcrypt");
 const router = express.Router();
+const db = require("../../database/db");
 
 router.use(bodyparser.json());
 router.use(cookieparser());
 
 const users = [{ user: "johnnyaguilar", pw: "password" }];
 const sessions = new Map();
+const saltRounds = 5;
 
 // check to see if login credentials are correct
 function credentialscheck(username, password) {
@@ -73,7 +76,7 @@ function authcheck(req, res, next) {
     req.user = session;
     next();
   } else {
-    res.status(401).send("incorrect user credentials");
+    return res.status(401).send("incorrect user credentials");
   }
 }
 
@@ -108,6 +111,44 @@ router.post("/logout", (req, res) => {
   }
   res.clearCookie("sessionId");
   res.sendStatus(200);
+});
+
+// signup end point
+router.post("/signup", (req, res) => {
+  const { firstName, lastName, email, username, password, confirmPassword } =
+    req.body;
+
+  if (password != confirmPassword) {
+    return res.status(400).send("Passwords do not match.");
+  }
+
+  if (
+    !firstName ||
+    !lastName ||
+    !email ||
+    !username ||
+    !password ||
+    !confirmPassword
+  ) {
+    return res.status(400).send("Missing information.");
+  }
+
+  bcrypt.hash(password, saltRounds, (err, hash) => {
+    if (err) {
+      console.error("Error hashing password:", err);
+      return res.status(500).send("Internal server error");
+    }
+
+    const query =
+      "INSERT INTO Customers (FirstName, LastName, Email, UserName, Password)" +
+      "VALUES (?, ?, ?, ?, ?)";
+    db.execute(query, [firstName, lastName, email, username, hash], (err) => {
+      if (err) {
+        return res.status(500).send("Database error.");
+      }
+      return res.status(201).send("User registered successfully");
+    });
+  });
 });
 
 module.exports = router;
