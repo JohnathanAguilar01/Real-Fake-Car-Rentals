@@ -1,0 +1,59 @@
+.signup {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.signup-logo-img {
+  padding: 20px;
+  display: block;
+  width: 300px;
+  height: auto;
+}
+
+.signup-textfeild {
+  display: grid;
+  align-self: center;
+}
+
+.signup-button:hover {
+  filter: brightness(0.8);
+}
+
+.signup-button {
+  font-family: Staatliches;
+  font-size: 22px;
+  width: 400px;
+  height: 40px;
+  color: white;
+  background-color: #efbe25;
+  border-radius: 5px;
+  border: none;
+  box-shadow: none;
+  outline: none;
+  display: block;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px;
+  cursor: pointer;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.signup-login-feild {
+  font-family: "League Spartan", sans-serif !important;
+  display: flex;
+}
+
+.signup-login-button:hover {
+  filter: brightness(0.8);
+  text-decoration: underline;
+}
+
+.signup-login-button {
+  color: red;
+  padding-left: 4px;
+}

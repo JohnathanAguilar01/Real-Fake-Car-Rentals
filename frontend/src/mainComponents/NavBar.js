@@ -45,7 +45,7 @@ function Navbar() {
       </AccountButton>
       <Modal open={isOpen} onClose={() => onClose()}>
         {isSignUp ? (
-          <SignUp></SignUp>
+          <SignUp onLogin={() => setIsSignUp(!isSignUp)}></SignUp>
         ) : (
           <Login
             setIsShown={setIsShown}
