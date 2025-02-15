@@ -9,18 +9,12 @@ const db = require("../../database/db");
 router.use(bodyparser.json());
 router.use(cookieparser());
 
-const users = [{ user: "johnnyaguilar", pw: "password" }];
 const sessions = new Map();
 const saltRounds = 5;
 
 // check to see if login credentials are correct
 function credentialscheck(username, password) {
   var foo = true;
-  user = users.find((user) => user.user === username && user.pw === password);
-  if (!user) {
-    foo = false;
-  }
-  return foo;
 }
 
 // generate a random uid
@@ -81,21 +75,36 @@ function authcheck(req, res, next) {
 }
 
 // login end point
-router.post("/login", (req, res) => {
-  const { username, password } = req.body;
-  const isvalid = credentialscheck(username, password);
-  console.log(isvalid);
+router.post("/login", async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    const query = "SELECT Password FROM Customers WHERE UserName = ?";
+    console.log("Executing query:", query, "with username:", username);
+    const [results] = await db.execute(query, [username]);
 
-  if (isvalid) {
-    const sessionid = createOrUpdateSession(username);
-    res.cookie("sessionid", sessionid, {
-      secure: true,
-      httponly: true,
-      samesite: "none",
-    });
-    res.json({ user: { username } });
-  } else {
-    res.status(401).send("Incorrect User Information");
+    if (results.length === 0) {
+      console.log("User not found");
+      return res.status(404).send("User not found");
+    }
+
+    const storedHash = results[0].Password; // Notice capital P if it's case-sensitive
+    console.log(password + " " + storedHash);
+
+    const isMatch = await bcrypt.compare(password, storedHash);
+    if (isMatch) {
+      const sessionid = createOrUpdateSession(username);
+      res.cookie("sessionid", sessionid, {
+        secure: true,
+        httponly: true,
+        samesite: "none",
+      });
+      return res.json({ user: { username } });
+    } else {
+      return res.status(401).send("Incorrect User Information");
+    }
+  } catch (err) {
+    console.error("Login error:", err);
+    res.status(500).send("Internal server error");
   }
 });
 
