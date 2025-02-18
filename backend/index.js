@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const mysql = require("mysql2");
+const cookieParser = require("cookie-parser");
 
 require("dotenv").config();
 
@@ -11,6 +12,7 @@ app.use(
     origin: "http://localhost:3000", // Replace with your frontend's origin
     credentials: true, // Allow cookies and credentials
   }),
+  cookieParser(),
 );
 app.use(express.json());
 

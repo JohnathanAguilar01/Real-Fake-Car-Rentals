@@ -36,7 +36,7 @@ async function createOrUpdateSession(username, inputSessionsId = null) {
   } catch (error) {
     console.error("Database error: ", error);
   }
-
+  console.log(sessionsId);
   return sessionsId;
 }
 
@@ -66,15 +66,29 @@ function refreshsession(req, res, next) {
 }
 
 // middleware to check if user is logged in
-function authcheck(req, res, next) {
+async function authcheck(req, res, next) {
   const sessionid = req.cookies.sessionid;
-  const session = sessions.get(sessionid);
 
-  if (session) {
-    req.user = session;
-    next();
-  } else {
-    return res.status(401).send("incorrect user credentials");
+  // Ensure sessionid is present and valid
+  if (!sessionid || typeof sessionid !== "string" || sessionid.trim() === "") {
+    return res.status(401).send("Unauthorized: No session ID provided");
+  }
+
+  const query =
+    "SELECT COUNT(*) AS sessionExists FROM Sessions WHERE SessionID = ?";
+
+  try {
+    const [rows] = await db.query(query, [sessionid]);
+
+    // Check if the session exists
+    if (rows[0] && rows[0].sessionExists > 0) {
+      return next();
+    } else {
+      return res.status(402).send("Unauthorized: Invalid session ID");
+    }
+  } catch (error) {
+    console.error("Database error:", error);
+    return res.status(500).send("Internal Server Error");
   }
 }
 
@@ -83,21 +97,18 @@ router.post("/login", async (req, res) => {
   try {
     const { username, password } = req.body;
     const query = "SELECT Password FROM Customers WHERE UserName = ?";
-    console.log("Executing query:", query, "with username:", username);
     const [results] = await db.execute(query, [username]);
 
     if (results.length === 0) {
-      console.log("User not found");
       return res.status(404).send("User not found");
     }
 
     const storedHash = results[0].Password; // Notice capital P if it's case-sensitive
-    console.log(password + " " + storedHash);
 
     const isMatch = await bcrypt.compare(password, storedHash);
     if (isMatch) {
-      const sessionid = createOrUpdateSession(username);
-      res.cookie("sessionid", sessionid, {
+      const sessionid = await createOrUpdateSession(username);
+      res.cookie("sessionid", String(sessionid), {
         secure: true,
         httponly: true,
         samesite: "none",
