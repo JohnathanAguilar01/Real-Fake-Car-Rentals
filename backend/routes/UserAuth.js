@@ -12,26 +12,30 @@ router.use(cookieparser());
 const sessions = new Map();
 const saltRounds = 5;
 
-// check to see if login credentials are correct
-function credentialscheck(username, password) {
-  var foo = true;
-}
-
 // generate a random uid
 function generateSessionId() {
   return crypto.randomUUID();
 }
 
 // updates the expire time for a session or makes a new one if no session exists
-function createOrUpdateSession(username, inputSessionsId = null) {
+async function createOrUpdateSession(username, inputSessionsId = null) {
   // Set expiration time to 2 days from now
   const expiresAt = Date.now() + 1000 * 60 * 60 * 24 * 2;
 
   // Use provided session ID or generate a new one
   let sessionsId = inputSessionsId || generateSessionId();
 
-  // Store session in the sessions map
-  sessions.set(sessionsId, { username, expiresAt });
+  // const [result] = await pool.query(query, [sessionsId, username]);Store session in the sessions map
+  // sessions.set(sessionsId, { username, expiresAt });
+
+  try {
+    const query =
+      "INSERT IGNORE INTO Sessions (SessionID, CustomerID) " +
+      "SELECT ?, CustomerID FROM Customers WHERE UserName = ?";
+    const [result] = await db.query(query, [sessionsId, username]);
+  } catch (error) {
+    console.error("Database error: ", error);
+  }
 
   return sessionsId;
 }

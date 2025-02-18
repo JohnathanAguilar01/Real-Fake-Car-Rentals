@@ -1,9 +1,8 @@
-DROP DATABASE IF EXISTS Real_Fake_Car_Rentals;
 CREATE DATABASE IF NOT EXISTS Real_Fake_Car_Rentals;
 
 USE Real_Fake_Car_Rentals;
 
-create table Vehicles(
+CREATE TABLE IF NOT EXISTS Vehicles(
 	CarID int auto_increment primary key,
     VIN varchar(255) unique not null,
     Mileage bigint not null,
@@ -18,23 +17,23 @@ create table Vehicles(
     CarType varchar(255) not null
 );
 
-create table Administrator(
+CREATE TABLE IF NOT EXISTS Administrator(
     AdminID int auto_increment primary key,
     `User` varchar(255) not null,           
     Email varchar(255) not null,           
     `Password` varchar(255) not null          
 );
 
-create table Customers(
+CREATE TABLE IF NOT EXISTS Customers(
 	CustomerID int auto_increment primary key,
     FirstName varchar(255) not null,
     LastName varchar(255) not null,
-    Email varchar(255),
-    UserName varchar(255),
-    Password varchar(255)
+    Email varchar(255) UNIQUE NOT NULL,
+    UserName varchar(255) NOT NULL,
+    Password varchar(255) NOT NULL
 );
 
-create table Reservations(
+CREATE TABLE IF NOT EXISTS Reservations(
 	ReservationID int auto_increment primary key,
     StartDate date not null,
     EndDate date not null,
@@ -47,7 +46,7 @@ create table Reservations(
     references Vehicles(CarID)
 );
 
-create table Reports(
+CREATE TABLE IF NOT EXISTS Reports(
 	ReportID int auto_increment primary key,
     Damage varchar(255),
     GasAmount int not null,
@@ -57,4 +56,12 @@ create table Reports(
     references Vehicles(CarID),
     constraint FK_ReservationReport foreign key (ReservationID)
     references Reservations(ReservationID)
+);
+
+CREATE TABLE IF NOT EXISTS Sessions(
+    SessionID VARCHAR(255) PRIMARY KEY,
+    CustomerID INT,
+    CONSTRAINT FK_SessionsCustomerID 
+    FOREIGN KEY (CustomerID) 
+    REFERENCES Customers(CustomerID)
 );
