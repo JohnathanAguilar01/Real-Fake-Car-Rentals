@@ -1,3 +1,37 @@
+.loading-screen {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: white; /* Just for visibility */
+  z-index: 9900; /* Ensure it stays on top */
+}
+
+.loader {
+  width: 48px;
+  height: 48px;
+  border: 5px solid #000000;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+  z-index: 9999;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 .navbar {
   box-sizing: border-box;
   width: 100%;

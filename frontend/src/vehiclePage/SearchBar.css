@@ -3,6 +3,7 @@
   gap: 20px;
   align-items: flex-end;
   justify-content: center;
+  background: white;
 }
 .SearchBar-button {
   font-family: Staatliches;

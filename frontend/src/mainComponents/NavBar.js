@@ -1,5 +1,5 @@
 // Navbar.js
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./NavBar.css"; // Import CSS for styling
 import { MdAccountCircle } from "react-icons/md";
 import Modal from "../mainComponents/Modal.js";
@@ -11,26 +11,38 @@ function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isShown, setIsShown] = useState(true);
   const [isSignUp, setIsSignUp] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   function onClose() {
     setIsOpen(false);
     setIsSignUp(false);
   }
 
-  fetch("http://localhost:5000/UserAuth/authCheck", {
-    method: "POST",
-    credentials: "include",
-  })
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error("Network response was not ok");
-      } else {
-        setIsShown();
-      }
-      return res.text();
+  useEffect(() => {
+    fetch("http://localhost:5000/UserAuth/authCheck", {
+      method: "POST",
+      credentials: "include",
     })
-    .then((data) => console.log(data))
-    .catch((error) => console.error("Error Validating Credentials:", error));
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Network response was not ok");
+        } else {
+          setIsShown();
+        }
+        setIsLoading(false);
+        return res.text();
+      })
+      .then((data) => console.log(data))
+      .catch((error) => console.error("Error Validating Credentials:", error));
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="loading-screen">
+        <span className="loader"></span>
+      </div>
+    );
+  }
 
   return (
     <nav className="navbar">
