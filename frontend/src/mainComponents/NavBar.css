@@ -8,7 +8,7 @@
   width: 100vw;
   height: 100vh;
   background: white; /* Just for visibility */
-  z-index: 9900; /* Ensure it stays on top */
+  z-index: 9999; /* Ensure it stays on top */
 }
 
 .loader {

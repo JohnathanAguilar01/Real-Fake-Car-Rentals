@@ -5,30 +5,22 @@
 }
 
 .homepage-banner {
-  margin-top: 70px;
-  position: relative;
+  display: flex;
   width: 100%;
   height: 750px; /* Adjust height as needed */
+  background-image: url("../../public/carbanner.jpg");
   overflow: hidden;
+  align-items: center;
+  justify-content: center;
 }
 
-.homepage-banner-img {
-  width: 100%;
-}
 .homepage-banner-content {
-  position: absolute;
   background-color: white;
   padding: 40px;
   border-radius: 20px;
-  top: 50%; /* Centers content vertically */
-  left: 50%; /* Centers content horizontally */
-  transform: translate(-50%, -50%); /* Correct centering */
-  color: white; /* Makes the text stand out */
+  color: white;
   text-align: center;
-  color: #efbe25; /* Makes the text stand out */
-  z-index: 2;
-  transition: 0.3s;
-  animation: fadein 1s;
+  color: #efbe25;
 }
 
 .homepage-banner-content h1 {

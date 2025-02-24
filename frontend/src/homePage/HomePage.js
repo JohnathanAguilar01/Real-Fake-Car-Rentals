@@ -12,11 +12,6 @@ const HomePage = () => {
   return (
     <div className="homepage">
       <div className="homepage-banner">
-        <img
-          className="homepage-banner-img"
-          src="/carbanner.jpg"
-          alt="car banner"
-        />
         <div className="homepage-banner-content">
           <h1 className="homepage-banner-text">REAL FAKE CAR RENTALS</h1>
           <div className="homepage-banner-button-wrapper">
