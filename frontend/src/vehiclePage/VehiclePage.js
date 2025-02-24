@@ -1,6 +1,5 @@
 import React from "react";
 import VehicleDisplay from "./VehicleDisplay.js";
-import Layout from "../mainComponents/Layout.js";
 
 function VehiclePage() {
   return (
