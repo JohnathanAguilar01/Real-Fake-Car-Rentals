@@ -1,14 +1,16 @@
 // Navbar.js
 import React, { useEffect, useState } from "react";
 import "./NavBar.css"; // Import CSS for styling
-import { MdAccountCircle } from "react-icons/md";
+import { MdAccountCircle, MdOutlineDehaze } from "react-icons/md";
 import Modal from "../mainComponents/Modal.js";
 import Login from "../userAuth/Login.js";
 import SignUp from "../userAuth/SignUp.js";
 import AccountButton from "./AccountButton.js";
+import SideBar from "./SideBar.js";
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isSideOpen, setIsSideOpen] = useState(false);
   const [isShown, setIsShown] = useState(true);
   const [isSignUp, setIsSignUp] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -16,6 +18,10 @@ function Navbar() {
   function onClose() {
     setIsOpen(false);
     setIsSignUp(false);
+  }
+
+  function onCloseSide() {
+    setIsSideOpen(false);
   }
 
   useEffect(() => {
@@ -46,7 +52,11 @@ function Navbar() {
 
   return (
     <nav className="navbar">
+      <button className="navbar-hamburger" onClick={setIsSideOpen}>
+        <MdOutlineDehaze className="navbar-icon" />
+      </button>
       <div className="navbar-name">
+        <img className="navbar-logo" src="QuarterLogo.png" alt="Logo" />
         <h1>Real Fake Car Rentals</h1>
       </div>
       <AccountButton setIsOpen={setIsOpen} isShown={isShown}>
@@ -70,6 +80,7 @@ function Navbar() {
           />
         )}
       </Modal>
+      <SideBar open={isSideOpen} onClose={() => onCloseSide()} />
     </nav>
   );
 }

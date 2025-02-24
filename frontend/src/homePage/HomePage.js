@@ -11,9 +11,6 @@ const HomePage = () => {
   };
   return (
     <div className="homepage">
-      <div className="homepage-navbar">
-        <NavBar />
-      </div>
       <div className="homepage-banner">
         <img
           className="homepage-banner-img"
