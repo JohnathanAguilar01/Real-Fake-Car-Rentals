@@ -1,8 +1,7 @@
 // Navbar.js
-require("dotenv").config({ path: "../.env" });
 import React, { useEffect, useState } from "react";
 import "./NavBar.css"; // Import CSS for styling
-import { MdAccountCircle, MdOutlineDehaze } from "react-icons/md";
+import { MdOutlineDehaze } from "react-icons/md";
 import Modal from "../mainComponents/Modal.js";
 import Login from "../userAuth/Login.js";
 import SignUp from "../userAuth/SignUp.js";
@@ -15,6 +14,8 @@ function Navbar() {
   const [isShown, setIsShown] = useState(true);
   const [isSignUp, setIsSignUp] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const API_URL = process.env.REACT_APP_API_URL;
+  console.log(API_URL);
 
   function onClose() {
     setIsOpen(false);
@@ -26,7 +27,7 @@ function Navbar() {
   }
 
   useEffect(() => {
-    fetch(`${process.env.BACKEND_API_URL}/UserAuth/authCheck`, {
+    fetch(`${API_URL}/UserAuth/authCheck`, {
       method: "POST",
       credentials: "include",
     })
@@ -36,11 +37,11 @@ function Navbar() {
         } else {
           setIsShown();
         }
-        setIsLoading(false);
         return res.text();
       })
       .then((data) => console.log(data))
-      .catch((error) => console.error("Error Validating Credentials:", error));
+      .catch((error) => console.error("Error Validating Credentials:", error))
+      .finally(() => setIsLoading(false));
   }, []);
 
   if (isLoading) {

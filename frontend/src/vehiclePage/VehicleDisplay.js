@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-require("dotenv").config({ path: "../.env" });
 import VehicleCard from "./VehicleCard.js";
 import "./VehicleDisplay.css";
 import SearchBar from "./SearchBar.js";
@@ -15,7 +14,7 @@ function VehicleDisplay() {
     // Only fetch if all required parameters are set
     if (StartDate && EndDate && Type) {
       fetch(
-        `${process.env.BACKEND_API_URL}/Vehicles/AvailableVehicles/${StartDate}/${EndDate}/${Type}`,
+        `${process.env.REACT_APP_API_URL}/Vehicles/AvailableVehicles/${StartDate}/${EndDate}/${Type}`,
       )
         .then((response) => {
           if (!response.ok) {
