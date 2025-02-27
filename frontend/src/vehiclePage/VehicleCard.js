@@ -1,4 +1,5 @@
 import React from "react";
+require("dotenv").config({ path: "../.env" });
 import "./VehicleCard.css";
 
 function VehicleCard({
@@ -16,7 +17,7 @@ function VehicleCard({
 }) {
   function onRent() {
     console.log(carid);
-    fetch("http://localhost:5000/Vehicles/RentVehicle", {
+    fetch(`${process.env.BACKEND_API_URL}/Vehicles/RentVehicle`, {
       method: "POST",
       credentials: "include",
       headers: {

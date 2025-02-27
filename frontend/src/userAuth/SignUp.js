@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+require("dotenv").config({ path: "../.env" });
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
@@ -28,7 +29,7 @@ function SignUp({ setIsShown, onClose, onLogin }) {
   };
 
   function onSignup() {
-    fetch("http://localhost:5000/UserAuth/signup", {
+    fetch(`${process.env.BACKEND_API_URL}/UserAuth/signup`, {
       method: "POST",
       credentials: "include",
       headers: {

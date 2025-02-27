@@ -1,4 +1,5 @@
 // Navbar.js
+require("dotenv").config({ path: "../.env" });
 import React, { useEffect, useState } from "react";
 import "./NavBar.css"; // Import CSS for styling
 import { MdAccountCircle, MdOutlineDehaze } from "react-icons/md";
@@ -25,7 +26,7 @@ function Navbar() {
   }
 
   useEffect(() => {
-    fetch("http://localhost:5000/UserAuth/authCheck", {
+    fetch(`${process.env.BACKEND_API_URL}/UserAuth/authCheck`, {
       method: "POST",
       credentials: "include",
     })
