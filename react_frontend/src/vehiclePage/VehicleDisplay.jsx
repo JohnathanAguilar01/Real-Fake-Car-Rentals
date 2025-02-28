@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import VehicleCard from "./VehicleCard.js";
+import VehicleCard from "./VehicleCard.jsx";
 import "./VehicleDisplay.css";
-import SearchBar from "./SearchBar.js";
+import SearchBar from "./SearchBar.jsx";
 
 function VehicleDisplay() {
   const [vehicles, setVehicles] = useState([]);
@@ -14,7 +14,7 @@ function VehicleDisplay() {
     // Only fetch if all required parameters are set
     if (StartDate && EndDate && Type) {
       fetch(
-        `${process.env.REACT_APP_API_URL}/Vehicles/AvailableVehicles/${StartDate}/${EndDate}/${Type}`,
+        `${import.meta.env.VITE_API_URL}/Vehicles/AvailableVehicles/${StartDate}/${EndDate}/${Type}`,
       )
         .then((response) => {
           if (!response.ok) {

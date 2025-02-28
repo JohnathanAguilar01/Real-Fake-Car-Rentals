@@ -28,7 +28,7 @@ function SignUp({ setIsShown, onClose, onLogin }) {
   };
 
   function onSignup() {
-    fetch(`${process.env.REACT_APP_API_URL}/UserAuth/signup`, {
+    fetch(`${import.meta.env.VITE_API_URL}/UserAuth/signup`, {
       method: "POST",
       credentials: "include",
       headers: {

@@ -1,5 +1,5 @@
 import React from "react";
-import VehicleDisplay from "./VehicleDisplay.js";
+import VehicleDisplay from "./VehicleDisplay.jsx";
 
 function VehiclePage() {
   return (

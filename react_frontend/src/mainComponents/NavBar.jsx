@@ -2,19 +2,19 @@
 import React, { useEffect, useState } from "react";
 import "./NavBar.css"; // Import CSS for styling
 import { MdOutlineDehaze } from "react-icons/md";
-import Modal from "../mainComponents/Modal.js";
-import Login from "../userAuth/Login.js";
-import SignUp from "../userAuth/SignUp.js";
-import AccountButton from "./AccountButton.js";
-import SideBar from "./SideBar.js";
+import Modal from "../mainComponents/Modal.jsx";
+import Login from "../userAuth/Login.jsx";
+import SignUp from "../userAuth/SignUp.jsx";
+import AccountButton from "./AccountButton.jsx";
+import SideBar from "./SideBar.jsx";
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isSideOpen, setIsSideOpen] = useState(false);
   const [isShown, setIsShown] = useState(true);
   const [isSignUp, setIsSignUp] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const API_URL = process.env.REACT_APP_API_URL;
+  const [isLoading, setIsLoading] = useState(false);
+  const API_URL = import.meta.env.VITE_API_URL;
   console.log(API_URL);
 
   function onClose() {
@@ -82,7 +82,7 @@ function Navbar() {
           />
         )}
       </Modal>
-      <SideBar open={isSideOpen} onClose={() => onCloseSide()} />
+      {/*<SideBar open={isSideOpen} onClose={() => onCloseSide()} />*/}
     </nav>
   );
 }

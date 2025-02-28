@@ -1,11 +1,13 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
 @font-face {
   font-family: "Staatliches";
   src: url("./fonts/Staatliches-Regular.ttf") format("truetype");
-}
-
-.App {
-  width: 100vw;
-  height: 100vh;
 }
 
 .routes {

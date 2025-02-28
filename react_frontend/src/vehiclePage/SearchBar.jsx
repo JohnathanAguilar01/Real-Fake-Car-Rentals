@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./SearchBar.css";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
-import DateRange from "./DateRange.js";
+import DateRange from "./DateRange.jsx";
 
 function SearchBar({ onSearch }) {
   const options = ["Sedan", "SUV", "Truck", "Coupe"];
