@@ -4,7 +4,7 @@ const cookieparser = require("cookie-parser");
 const crypto = require("crypto");
 const bcrypt = require("bcrypt");
 const router = express.Router();
-const db = require("../../database/db");
+const db = require("../db");
 
 router.use(bodyparser.json());
 router.use(cookieparser());
