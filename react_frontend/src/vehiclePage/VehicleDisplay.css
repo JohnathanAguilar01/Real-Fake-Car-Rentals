@@ -1,13 +1,15 @@
 .vehicle-display {
   display: flex;
   justify-content: center;
-  width: 100%;
+  width: 100vw;
   height: 100%;
 }
 
 .vehicle-display-searchbar {
   display: flex;
   position: fixed;
+  top: 70px;
+  left: 0;
   width: 100%;
   background-color: white;
   align-items: center;
