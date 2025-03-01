@@ -1,4 +1,3 @@
-// Navbar.js
 import React, { useEffect, useState } from "react";
 import "./NavBar.css"; // Import CSS for styling
 import { MdOutlineDehaze } from "react-icons/md";
