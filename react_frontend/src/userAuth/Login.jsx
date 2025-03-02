@@ -18,7 +18,7 @@ function Login({ setIsShown, onClose, onSignUp }) {
   };
 
   function onLogin() {
-    fetch(`${import.meta.env.VITE_API_URL}/UserAuth/login`, {
+    fetch(`http://${import.meta.env.VITE_API_URL}/UserAuth/login`, {
       method: "POST",
       credentials: "include",
       headers: {

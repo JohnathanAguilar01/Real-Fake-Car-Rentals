@@ -9,7 +9,8 @@ router.get("/", async (req, res) => {
     res.json(rows);
   } catch (err) {
     console.error(err);
-    res.status(500).send("Server error");
+    console.log(err);
+    res.status(500).send("Server error: this big bad");
   }
 });
 

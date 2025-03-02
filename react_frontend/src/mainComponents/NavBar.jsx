@@ -12,7 +12,7 @@ function Navbar() {
   const [isSideOpen, setIsSideOpen] = useState(false);
   const [isShown, setIsShown] = useState(true);
   const [isSignUp, setIsSignUp] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const API_URL = import.meta.env.VITE_API_URL;
   console.log(API_URL);
 
@@ -26,7 +26,7 @@ function Navbar() {
   }
 
   useEffect(() => {
-    fetch(`${API_URL}/UserAuth/authCheck`, {
+    fetch(`http://${API_URL}/UserAuth/authCheck`, {
       method: "POST",
       credentials: "include",
     })
