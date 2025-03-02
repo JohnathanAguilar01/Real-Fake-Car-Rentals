@@ -16,7 +16,7 @@ function VehicleCard({
 }) {
   function onRent() {
     console.log(carid);
-    fetch(`${import.meta.env.VITE_API_URL}/Vehicles/RentVehicle`, {
+    fetch(`http://${import.meta.env.VITE_API_URL}/Vehicles/RentVehicle`, {
       method: "POST",
       credentials: "include",
       headers: {

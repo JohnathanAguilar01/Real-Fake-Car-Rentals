@@ -14,7 +14,7 @@ function VehicleDisplay() {
     // Only fetch if all required parameters are set
     if (StartDate && EndDate && Type) {
       fetch(
-        `${import.meta.env.VITE_API_URL}/Vehicles/AvailableVehicles/${StartDate}/${EndDate}/${Type}`,
+        `http://${import.meta.env.VITE_API_URL}/Vehicles/AvailableVehicles/${StartDate}/${EndDate}/${Type}`,
       )
         .then((response) => {
           if (!response.ok) {
