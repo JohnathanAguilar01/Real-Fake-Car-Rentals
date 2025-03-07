@@ -1,5 +1,4 @@
 import React from "react";
-import ReactDom from "react-dom";
 import { useNavigate } from "react-router-dom";
 import { MdOutlineDehaze } from "react-icons/md";
 import { FaHome } from "react-icons/fa";
@@ -16,8 +15,8 @@ function SideBar({ open, onClose }) {
     onClose();
   };
 
-  return ReactDom.createPortal(
-    <div className="modal">
+  return (
+    <div className="sidebar-modal">
       <div className="sidebar">
         <div className="sidebar-top">
           <button className="sidebar-hamburger" onClick={onClose}>
@@ -43,8 +42,7 @@ function SideBar({ open, onClose }) {
           </li>
         </ul>
       </div>
-    </div>,
-    document.getElementById("modal"),
+    </div>
   );
 }
 

@@ -1,11 +1,10 @@
 import React from "react";
-import ReactDom from "react-dom";
 import "./Modal.css";
 
 function Modal({ open, children, onClose }) {
   if (!open) return null;
 
-  return ReactDom.createPortal(
+  return (
     <div className="modal">
       <div className="modal-window">
         <button className="modal-close" onClick={onClose}>
@@ -13,8 +12,7 @@ function Modal({ open, children, onClose }) {
         </button>
         <div className="modal-content">{children}</div>
       </div>
-    </div>,
-    document.getElementById("modal"),
+    </div>
   );
 }
 
