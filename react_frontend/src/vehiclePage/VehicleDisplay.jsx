@@ -12,10 +12,12 @@ function VehicleDisplay() {
 
   useEffect(() => {
     // Only fetch if all required parameters are set
+
+    const apiUrl = `${import.meta.env.VITE_API_URL}/Vehicles/AvailableVehicles/`;
+    console.log(apiUrl);
+
     if (StartDate && EndDate && Type) {
-      fetch(
-        `http://${import.meta.env.VITE_API_URL}/Vehicles/AvailableVehicles/${StartDate}/${EndDate}/${Type}`,
-      )
+      fetch(apiUrl + `${StartDate}/${EndDate}/${Type}`)
         .then((response) => {
           if (!response.ok) {
             throw new Error("Network response was not ok");
