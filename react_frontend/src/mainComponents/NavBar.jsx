@@ -81,7 +81,7 @@ function Navbar() {
           />
         )}
       </Modal>
-      {/*<SideBar open={isSideOpen} onClose={() => onCloseSide()} />*/}
+      <SideBar open={isSideOpen} onClose={() => onCloseSide()} />
     </nav>
   );
 }
