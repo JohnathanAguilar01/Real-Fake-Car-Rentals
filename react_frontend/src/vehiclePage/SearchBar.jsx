@@ -1,44 +1,56 @@
 import React, { useState } from "react";
 import "./SearchBar.css";
-import Autocomplete from "@mui/material/Autocomplete";
-import TextField from "@mui/material/TextField";
-import DateRange from "./DateRange.jsx";
+import { Autocomplete } from "@mantine/core";
+import { DatePickerInput } from "@mantine/dates";
+import dayjs from "dayjs";
 
 function SearchBar({ onSearch }) {
   const options = ["Sedan", "SUV", "Truck", "Coupe"];
   const [foo, setFoo] = useState("");
   const [bar, setBar] = useState([null, null]);
 
-  const handleDateChange = (value) => {
-    if (value) {
-      setBar(value);
-      // Call onSearch with the selected dates
-    }
-    console.log("Formatted Dates:", value);
-  };
+  const formattedStartDate = bar[0] ? dayjs(bar[0]).format("YYYY-MM-DD") : "";
+  const formattedEndDate = bar[1] ? dayjs(bar[1]).format("YYYY-MM-DD") : "";
 
   const onTypeChange = (event, newValue) => {
     setFoo(newValue);
   };
 
   const onSearchClick = (dates, type) => {
-    onSearch(bar[0], bar[1], foo);
+    onSearch(formattedStartDate, formattedEndDate, foo);
   };
+
+  //const changeDate = (newValue) => {
+  //  setValue(newValue);
+
+  //  // Format the dates to "yyyy-mm-dd"
+  //  const formattedDates = newValue.map((date) =>
+  //    date ? dayjs(date).format("YYYY-MM-DD") : null,
+  //  );
+
+  //  datesChanged(formattedDates);
+  //};
 
   return (
     <div className="SearchBar">
-      <div className="SearchBar-daterange">
-        <DateRange datesChanged={handleDateChange} />
-      </div>
+      <DatePickerInput
+        withinPortal={true}
+        type="range"
+        placeholder="Pick Rental Dates"
+        value={bar}
+        size="md"
+        onChange={setBar}
+        w={300}
+      />
       <div className="SearchBar-type">
         <Autocomplete
-          size="small"
-          options={options}
-          renderInput={(params) => (
-            <TextField {...params} placeholder="Car Types" />
-          )}
-          sx={{ width: 200 }}
-          onChange={onTypeChange}
+          withinPortal
+          placeholder="Car Types"
+          data={options}
+          value={foo}
+          onChange={setFoo}
+          size="md"
+          pos="relative"
         />
       </div>
       <button className="SearchBar-button" onClick={onSearchClick}>
