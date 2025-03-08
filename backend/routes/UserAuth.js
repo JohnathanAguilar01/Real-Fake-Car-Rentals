@@ -142,6 +142,19 @@ router.post("/signup", (req, res) => {
   const { firstName, lastName, email, username, password, confirmPassword } =
     req.body;
 
+  console.log(
+    firstName +
+      " " +
+      lastName +
+      " " +
+      email +
+      " " +
+      username +
+      " " +
+      password +
+      " " +
+      confirmPassword,
+  );
   if (password != confirmPassword) {
     return res.status(400).send("Passwords do not match.");
   }

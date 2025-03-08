@@ -43,24 +43,22 @@
 }
 
 .login-button {
-  font-family: Staatliches;
-  font-size: 22px;
   width: 400px;
   height: 40px;
+  font-family: Staatliches;
+  font-size: 22px;
   color: white;
   background-color: #efbe25;
   border-radius: 5px;
   border: none;
   box-shadow: none;
   outline: none;
-  display: block;
+  display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 8px;
+  padding: 10px;
   cursor: pointer;
-  margin-right: auto;
-  margin-left: auto;
 }
 
 .login-signup-feild {

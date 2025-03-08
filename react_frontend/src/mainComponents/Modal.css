@@ -13,12 +13,17 @@
 }
 
 .modal-window {
-  background: white;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  background-color: white;
 }
 
+@media (prefers-color-scheme: dark) {
+  .modal-window {
+    background-color: #242424;
+  }
+}
 .modal-close {
   background: transparent;
   border: none;

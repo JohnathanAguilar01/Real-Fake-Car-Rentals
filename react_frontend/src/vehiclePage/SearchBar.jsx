@@ -34,7 +34,6 @@ function SearchBar({ onSearch }) {
   return (
     <div className="SearchBar">
       <DatePickerInput
-        withinPortal={true}
         type="range"
         placeholder="Pick Rental Dates"
         value={bar}
@@ -44,7 +43,6 @@ function SearchBar({ onSearch }) {
       />
       <div className="SearchBar-type">
         <Autocomplete
-          withinPortal
           placeholder="Car Types"
           data={options}
           value={foo}
