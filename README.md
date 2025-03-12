@@ -26,6 +26,6 @@
   VITE_API_URL=
   ```
 
-## Must also make a secrets folder and put a db-root-password txt file inside `/.secrets/db-root-password.txt`
+## Must also make a secrets directory called `/.secrets/`
 
-- instide `db-root-password.txt` put whatever password you want for the root user of your MySql instance
+- inside `/.secrets/db-root-password.txt` put whatever password you want for the root user of your MySql instance
