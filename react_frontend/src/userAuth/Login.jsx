@@ -1,24 +1,15 @@
 import React, { useState } from "react";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import IconButton from "@mui/material/IconButton";
-import InputAdornment from "@mui/material/InputAdornment";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { TextInput } from "@mantine/core";
+import { PasswordInput } from "@mantine/core";
 import "./Login.css";
 
 function Login({ setIsShown, onClose, onSignUp }) {
-  const [showPassword, setShowPassword] = useState(false);
   const [username, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
   const [isInputRight, setIsInputRight] = useState(true);
 
-  const handleTogglePasswordVisibility = () => {
-    setShowPassword((prev) => !prev);
-  };
-
   function onLogin() {
-    fetch(`http://${import.meta.env.VITE_API_URL}/UserAuth/login`, {
+    fetch(`${import.meta.env.VITE_API_URL}/UserAuth/login`, {
       method: "POST",
       credentials: "include",
       headers: {
@@ -54,55 +45,23 @@ function Login({ setIsShown, onClose, onSignUp }) {
             className="login-wrong-input"
           />
         )}
-        <div className="login-textfeild">
-          <Box
-            component="form"
-            sx={{
-              "& > :not(style)": { m: 1, width: "400px" },
-            }}
-            noValidate
-            autoComplete="off"
-          >
-            <TextField
-              id="username"
-              label="Username"
-              variant="outlined"
-              onChange={(foo) => {
-                setUsername(foo.target.value);
-              }}
-            />
-          </Box>
-          <Box
-            component="form"
-            sx={{
-              "& > :not(style)": { m: 1, width: "400px" },
-            }}
-            noValidate
-            autoComplete="off"
-          >
-            <TextField
-              id="password"
-              label="Password"
-              variant="outlined"
-              onChange={(foo) => {
-                setPassword(foo.target.value);
-              }}
-              type={showPassword ? "text" : "password"}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={handleTogglePasswordVisibility}
-                      edge="end"
-                    >
-                      {showPassword ? <Visibility /> : <VisibilityOff />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </Box>
-        </div>
+        <div className="login-textfeild"></div>
+        <TextInput
+          placeholder="Username"
+          value={username}
+          onChange={(event) => setUsername(event.currentTarget.value)}
+          size="lg"
+          w={400}
+          m={5}
+        />
+        <PasswordInput
+          placeholder="Password"
+          value={password}
+          onChange={(event) => setPassword(event.currentTarget.value)}
+          size="lg"
+          w={400}
+          m={5}
+        />
         <button className="login-button" onClick={onLogin}>
           Login
         </button>

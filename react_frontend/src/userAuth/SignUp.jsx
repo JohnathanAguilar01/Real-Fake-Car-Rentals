@@ -1,16 +1,9 @@
 import React, { useState } from "react";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import IconButton from "@mui/material/IconButton";
-import InputAdornment from "@mui/material/InputAdornment";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
-
+import { TextInput } from "@mantine/core";
+import { PasswordInput } from "@mantine/core";
 import "./SignUp.css";
 
 function SignUp({ setIsShown, onClose, onLogin }) {
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [firstName, setFirstName] = useState(null);
   const [lastName, setLastName] = useState(null);
   const [email, setEmail] = useState(null);
@@ -28,7 +21,7 @@ function SignUp({ setIsShown, onClose, onLogin }) {
   };
 
   function onSignup() {
-    fetch(`http://${import.meta.env.VITE_API_URL}/UserAuth/signup`, {
+    fetch(`${import.meta.env.VITE_API_URL}/UserAuth/signup`, {
       method: "POST",
       credentials: "include",
       headers: {
@@ -70,135 +63,54 @@ function SignUp({ setIsShown, onClose, onLogin }) {
           />
         )}
         <div className="signup-textfeild">
-          <Box
-            component="form"
-            sx={{
-              "& > :not(style)": { m: 1, width: "400px" },
-            }}
-            noValidate
-            autoComplete="off"
-          >
-            <TextField
-              id="first-name"
-              label="First Name"
-              variant="outlined"
-              onChange={(foo) => {
-                setFirstName(foo.target.value);
-              }}
-            />
-          </Box>
-          <Box
-            component="form"
-            sx={{
-              "& > :not(style)": { m: 1, width: "400px" },
-            }}
-            noValidate
-            autoComplete="off"
-          >
-            <TextField
-              id="last-name"
-              label="Last Name"
-              variant="outlined"
-              onChange={(foo) => {
-                setLastName(foo.target.value);
-              }}
-            />
-          </Box>
-          <Box
-            component="form"
-            sx={{
-              "& > :not(style)": { m: 1, width: "400px" },
-            }}
-            noValidate
-            autoComplete="off"
-          >
-            <TextField
-              id="email"
-              label="Email"
-              variant="outlined"
-              onChange={(foo) => {
-                setEmail(foo.target.value);
-              }}
-            />
-          </Box>
-
-          <Box
-            component="form"
-            sx={{
-              "& > :not(style)": { m: 1, width: "400px" },
-            }}
-            noValidate
-            autoComplete="off"
-          >
-            <TextField
-              id="username"
-              label="Username"
-              variant="outlined"
-              onChange={(foo) => {
-                setUsername(foo.target.value);
-              }}
-            />
-          </Box>
-          <Box
-            component="form"
-            sx={{
-              "& > :not(style)": { m: 1, width: "400px" },
-            }}
-            noValidate
-            autoComplete="off"
-          >
-            <TextField
-              id="password"
-              label="Password"
-              variant="outlined"
-              onChange={(foo) => {
-                setPassword(foo.target.value);
-              }}
-              type={showPassword ? "text" : "password"}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={handleTogglePasswordVisibility}
-                      edge="end"
-                    >
-                      {showPassword ? <Visibility /> : <VisibilityOff />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </Box>
-          <Box
-            component="form"
-            sx={{
-              "& > :not(style)": { m: 1, width: "400px" },
-            }}
-            noValidate
-            autoComplete="off"
-          >
-            <TextField
-              id="confirm-password"
-              label="Confirm Password"
-              variant="outlined"
-              onChange={(foo) => {
-                setConfirmPassword(foo.target.value);
-              }}
-              type={showConfirmPassword ? "text" : "password"}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={handleToggleConfirmPasswordVisibility}
-                      edge="end"
-                    >
-                      {showConfirmPassword ? <Visibility /> : <VisibilityOff />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </Box>
+          <TextInput
+            placeholder="First Name"
+            value={firstName}
+            onChange={(event) => setFirstName(event.currentTarget.value)}
+            size="lg"
+            w={400}
+            m={5}
+          />
+          <TextInput
+            placeholder="Last Name"
+            value={lastName}
+            onChange={(event) => setLastName(event.currentTarget.value)}
+            size="lg"
+            w={400}
+            m={5}
+          />
+          <TextInput
+            placeholder="Email"
+            value={email}
+            onChange={(event) => setEmail(event.currentTarget.value)}
+            size="lg"
+            w={400}
+            m={5}
+          />
+          <TextInput
+            placeholder="Username"
+            value={username}
+            onChange={(event) => setUsername(event.currentTarget.value)}
+            size="lg"
+            w={400}
+            m={5}
+          />
+          <PasswordInput
+            placeholder="Password"
+            value={password}
+            onChange={(event) => setPassword(event.currentTarget.value)}
+            size="lg"
+            w={400}
+            m={5}
+          />
+          <PasswordInput
+            placeholder="Confirm Password"
+            value={confirmPassword}
+            onChange={(event) => setConfirmPassword(event.currentTarget.value)}
+            size="lg"
+            w={400}
+            m={5}
+          />
         </div>
         <button className="signup-button" onClick={onSignup}>
           Sign Up
