@@ -42,7 +42,7 @@ async function createOrUpdateSession(username, inputSessionsId = null) {
 
 // function to remove all expired sessions
 function removeexpiredsessions() {
-  const currentdate = date.now();
+  const currentdate = Date.now();
   for (let [sessionsid, session] of sessions) {
     if (session.expiresat < currentdate) {
       sessions.delete(sessionsid);
@@ -58,7 +58,7 @@ function refreshsession(req, res, next) {
   const session = sessions.get(sessionid);
 
   if (session) {
-    createorupdatesession(session.username, sessionsid);
+    createOrUpdateSession(session.username, sessionid);
     req.user = session;
   }
 
@@ -133,7 +133,7 @@ router.post("/logout", (req, res) => {
   if (sessionid) {
     sessions.delete(sessionid);
   }
-  res.clearCookie("sessionId");
+  res.clearCookie("sessionid");
   res.sendStatus(200);
 });
 
