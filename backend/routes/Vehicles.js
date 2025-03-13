@@ -34,23 +34,22 @@ router.get("/AvailableVehicles/:StartDate/:EndDate/:Type", async (req, res) => {
   }
 });
 
-router.post("/RentVehicle", (req, res) => {
-  const { startDate, endDate, insurance, customerID, vechileID } = req.body;
+router.post("/RentVehicle", async (req, res) => {
+  try {
+    const { startDate, endDate, insurance, customerID, vehicleID } = req.body;
+    const foo =
+      "INSERT INTO Reservations (StartDate, EndDate, Insurance, CustomerID, Vehicle)" +
+      "VALUES (?, ?, ?, ?, ?)";
+    const values = [startDate, endDate, insurance, customerID, vehicleID];
 
-  const foo =
-    "INSERT INTO Reservations (StartDate, EndDate, Insurance, CustomerID, Vehicle)" +
-    "VALUES (?, ?, ?, ?, ?)";
-  const values = [startDate, endDate, insurance, customerID, vechileID];
-
-  db.query(foo, values, (err, result) => {
-    if (err) {
-      console.error("Error inserting data:", err.message);
-      return res.status(500).json({ error: "Database error" });
-    }
+    const [result] = await db.query(foo, values);
     res
       .status(201)
       .json({ message: "Car added successfully", id: result.insertId });
-  });
+  } catch (err) {
+    console.error("Error inserting data:", err.message);
+    return res.status(500).json({ error: "Database error" });
+  }
 });
 
 export default router;

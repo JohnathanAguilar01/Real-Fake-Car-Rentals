@@ -21,7 +21,7 @@ app.use(express.json());
 // Middleware to use Vehicles routes
 app.use("/Vehicles", VehiclesRoutes);
 
-// Middleware to use UserAuth roustes
+// Middleware to use UserAuth routes
 app.use("/UserAuth", UserAuthRoutes);
 
 app.get("/", (req, res) => {
