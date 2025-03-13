@@ -1,6 +1,6 @@
-const express = require("express");
+import express from "express";
+import db from "../db.js";
 const router = express.Router();
-const db = require("../db");
 
 // Example: Fetch all users
 router.get("/", async (req, res) => {
@@ -53,4 +53,4 @@ router.post("/RentVehicle", (req, res) => {
   });
 });
 
-module.exports = router;
+export default router;

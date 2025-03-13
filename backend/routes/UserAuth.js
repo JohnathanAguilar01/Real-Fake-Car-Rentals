@@ -1,10 +1,10 @@
-const express = require("express");
-const bodyparser = require("body-parser");
-const cookieparser = require("cookie-parser");
-const crypto = require("crypto");
-const bcrypt = require("bcrypt");
+import express from "express";
+import bodyparser from "body-parser";
+import cookieparser from "cookie-parser";
+import crypto from "crypto";
+import bcrypt from "bcrypt";
+import db from "../db";
 const router = express.Router();
-const db = require("../db");
 
 router.use(bodyparser.json());
 router.use(cookieparser());
@@ -188,4 +188,4 @@ router.post("/signup", (req, res) => {
   });
 });
 
-module.exports = router;
+export default router;
