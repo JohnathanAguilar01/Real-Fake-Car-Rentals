@@ -14,12 +14,12 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/AvailableVehicles/:StartDate/:EndDate/:Type", async (req, res) => {
+router.get("/available/:startDate/:endDate/:type", async (req, res) => {
   try {
-    const StartDate = req.params.StartDate;
-    const EndDate = req.params.EndDate;
-    const Type = req.params.Type;
-    const foo =
+    const startDate = req.params.StartDate;
+    const endDate = req.params.EndDate;
+    const type = req.params.Type;
+    const query =
       "select CarID, Mileage, MPG, Price, CarYear, Model, Make, Color, CarType, VIN from Vehicles " +
       "where CarType = ? and " +
       "CarId not in " +
