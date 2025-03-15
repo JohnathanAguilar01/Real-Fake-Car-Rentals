@@ -1,5 +1,5 @@
 import express from "express";
-import VehicleController from "../controllers/vehicle-controler";
+import VehicleController from "../controllers/vehicle-controler.js";
 const router = express.Router();
 
 // Example: Fetch all users
@@ -15,7 +15,10 @@ router.get("/", async (req, res) => {
 
 router.get("/available", async (req, res) => {
   try {
-    const { startDate, endDate, type } = req.query;
+    const type: string = (req.query.type as string) ?? "";
+    const startDate: string = (req.query.startDate as string) ?? "";
+    const endDate: string = (req.query.endDate as string) ?? "";
+
     const vehicles = await VehicleController.getAvailableVehicles(
       type,
       startDate,
