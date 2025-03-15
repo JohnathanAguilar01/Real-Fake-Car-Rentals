@@ -26,6 +26,7 @@ router.get("/available", async (req, res) => {
     );
     if (!vehicles) {
       res.status(404).json({ error: "No cars found" });
+      return;
     }
     res.json(vehicles);
   } catch (error) {

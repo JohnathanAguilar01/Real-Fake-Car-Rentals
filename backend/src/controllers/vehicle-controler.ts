@@ -29,13 +29,13 @@ class VehicleController {
     insurance: boolean,
     customerID: number,
     vehicleID: number,
-  ): Promise<Vehicle[] | null> {
+  ): Promise<{ vehicleId: number } | null> {
     const query: string =
       "INSERT INTO Reservations (StartDate, EndDate, Insurance, CustomerID, Vehicle)" +
       "VALUES (?, ?, ?, ?, ?)";
     const values = [startDate, endDate, insurance, customerID, vehicleID];
     const [result]: any = await db.query(query, values);
-    return result.length ? result[0] : null;
+    return result.insertId ? { vehicleId: result.insertId } : null;
   }
 }
 
