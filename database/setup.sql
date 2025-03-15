@@ -61,6 +61,7 @@ CREATE TABLE IF NOT EXISTS Reports(
 CREATE TABLE IF NOT EXISTS Sessions(
     SessionID VARCHAR(255) PRIMARY KEY,
     CustomerID INT,
+    LastLogin DATE,
     CONSTRAINT FK_SessionsCustomerID 
     FOREIGN KEY (CustomerID) 
     REFERENCES Customers(CustomerID)

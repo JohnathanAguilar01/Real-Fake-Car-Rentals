@@ -1,5 +1,5 @@
 type Vehicle = {
-  vin: number;
+  vin: string;
   mileage: number;
   mpg: number;
   price: number;
