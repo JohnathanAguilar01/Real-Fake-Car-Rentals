@@ -1,5 +1,5 @@
-import Vehicle from "../models/vehicle";
-import db from "../config/db";
+import Vehicle from "../models/vehicle.js";
+import db from "../config/db.js";
 
 class VehicleController {
   static async getAllVehicles(): Promise<Vehicle[]> {
