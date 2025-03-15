@@ -4,8 +4,8 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 dotenv.config();
 // route imports
-import VehiclesRoutes from "./routes/Vehicles.js";
-import UserAuthRoutes from "./routes/UserAuth.js";
+import vehiclesRoutes from "./routes/vehicles-routes.js";
+import userRoutes from "./routes/user-routes.js";
 
 const app = express();
 
@@ -19,10 +19,10 @@ app.use(
 app.use(express.json());
 
 // Middleware to use Vehicles routes
-app.use("/Vehicles", VehiclesRoutes);
+app.use("/vehicles", vehiclesRoutes);
 
 // Middleware to use UserAuth routes
-app.use("/UserAuth", UserAuthRoutes);
+app.use("/user", userRoutes);
 
 app.get("/", (req, res) => {
   res.send("Backend is running!");

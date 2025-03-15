@@ -1,0 +1,17 @@
+{
+  // this should be added to the git repo
+  "compilerOptions": {
+    "module": "NodeNext",  // Use "ESNext" for modern ESM support or "CommonJS" for older projects
+    "moduleResolution": "NodeNext", // Ensure correct resolution for TypeScript files
+    "target": "ESNext",  // Ensures async/await support
+    "outDir": "./dist",  // Compiled files will go here
+    "rootDir": "./src",   // Your source files
+    "allowJs": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true
+  },
+  "include": ["src"],
+  "exclude": ["node_modules"]
+}
+
