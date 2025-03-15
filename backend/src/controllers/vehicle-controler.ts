@@ -1,6 +1,7 @@
 import Vehicle from "../models/vehicle.js";
 import db from "../config/db.js";
 
+// biome-ignore lint/complexity/noStaticOnlyClass: This class follows OOP patterns for learning purposes
 class VehicleController {
   static async getAllVehicles(): Promise<Vehicle[]> {
     const [result]: any = await db.query("SELECT * FROM Vehicles");
