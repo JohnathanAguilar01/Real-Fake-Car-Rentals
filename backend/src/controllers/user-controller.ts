@@ -30,22 +30,29 @@ export class UserController {
         const query: string =
           "INSERT INTO Sessions (session_id, user_id, expire_login) " +
           "VALUE (?,?,?)";
-        const [result]: any = await db.query(query, [
+        const [results] = await db.query(query, [
           sessionId,
           userId,
           expireLogin,
         ]);
-        console.log(result);
+        console.log(results);
         return sessionId;
       }
       const sessionId: string | null = inputSessionId;
       const query: string =
         "UPDATE Sessions SET last_login = ? WHERE session_id = ?";
-      const [result] = await db.query(query, [sessionId]);
-      console.log(result);
+      const [results] = await db.query(query, [sessionId]);
+      console.log(results);
       return sessionId;
     } catch (error) {
       console.error("Database error: ", error);
     }
+  }
+
+  static async sessionExists(sessionId: string) {
+    const query: string =
+      "SELECT COUNT(*) AS count FROM Sessions WHERE session_id = ?";
+    const [results] = await db.query(query, sessionId);
+    return results[0].count > 0;
   }
 }
