@@ -1,58 +1,40 @@
-import db from "../config/db.js";
-import crypto from "crypto";
+import { Request, Response } from "express";
+import UserService from "../services/user-service.js";
+import { TUser } from "../models/user.js";
 
 // biome-ignore lint/complexity/noStaticOnlyClass: This class follows OOP patterns for learning purposes
-export class UserController {
-  // updates the expire time for a session or makes a new one if no session exists
-  async createOrUpdateSession(
-    userId: number,
-    inputSessionId: string | null = null,
-  ) {
+export default class UserController {
+  static async login(req: Request, res: Response) {
     try {
-      if (!inputSessionId) {
-        const sessionId: string = crypto.randomUUID();
-        const addDaysToDate = (date: Date, days: number): string => {
-          const futureDate = new Date(date);
-          futureDate.setDate(futureDate.getDate() + days);
-
-          // Format to YYYY-MM-DD
-          const year = futureDate.getFullYear();
-          const month = String(futureDate.getMonth() + 1).padStart(2, "0"); // Ensure two digits
-          const day = String(futureDate.getDate()).padStart(2, "0"); // Ensure two digits
-
-          return `${year}-${month}-${day}`;
-        };
-
-        // Example Usage
-        const today: Date = new Date();
-        const expireLogin: string = addDaysToDate(today, 5);
-
-        const query: string =
-          "INSERT INTO Sessions (session_id, user_id, expire_login) " +
-          "VALUE (?,?,?)";
-        const [results] = await db.query(query, [
-          sessionId,
-          userId,
-          expireLogin,
-        ]);
-        console.log(results);
-        return sessionId;
+      const { id, password }: Pick<TUser, "id" | "password"> = req.body;
+      if (!id || !password) {
+        res.status(400).json({ error: "No user id or password recived" });
+        return;
       }
-      const sessionId: string | null = inputSessionId;
-      const query: string =
-        "UPDATE Sessions SET last_login = ? WHERE session_id = ?";
-      const [results] = await db.query(query, [sessionId]);
-      console.log(results);
-      return sessionId;
+      const sessionid = await UserService.login(id, password);
+      if (!sessionid) {
+        res.status(401).json({ error: "User not found" });
+        return;
+      }
+      res.cookie("sessionid", String(sessionid), {
+        secure: true,
+        httpOnly: true,
+        sameSite: "none",
+      });
+      res.json({ user: { id } });
+      return;
     } catch (error) {
-      console.error("Database error: ", error);
+      console.error("Login error:", error);
+      res.status(500).send("Internal server error");
     }
   }
 
-  static async sessionExists(sessionId: string) {
-    const query: string =
-      "SELECT COUNT(*) AS count FROM Sessions WHERE session_id = ?";
-    const [results] = await db.query(query, sessionId);
-    return results[0].count > 0;
+  static async logout(req: Request, res: Response) {
+    const sessionid = req.cookies.sessionid;
+    if (!sessionid) {
+      res.status(400).json({ error: "No session id recived" });
+    }
+    res.clearCookie("sessionid");
+    res.sendStatus(200);
   }
 }

@@ -1,49 +1,36 @@
-import Vehicle from "../models/vehicle.js";
-import db from "../config/db.js";
-import { throws } from "assert";
+import { Request, Response } from "express";
+import VehicleService from "../services/vehicle-service.js";
 
-// biome-ignore lint/complexity/noStaticOnlyClass: This class follows OOP patterns for learning purposes
-class VehicleController {
-  static async getAllVehicles(): Promise<Vehicle[]> {
-    const [result]: any = await db.query("SELECT * FROM Vehicles");
-    return result;
-  }
-
-  static async getAvailableVehicles(
-    type: string,
-    startDate: string,
-    endDate: string,
-  ): Promise<Vehicle[]> {
-    const query: string =
-      "select CarID, Mileage, MPG, Price, CarYear, Model, Make, Color, CarType, VIN from Vehicles " +
-      "where CarType = ? and " +
-      "CarId not in " +
-      "(select Vehicle from Reservations " +
-      "where ? < EndDate and " +
-      "? > StartDate)";
-    const [result]: any = await db.query(query, [type, startDate, endDate]);
-    return result;
-  }
-
-  static async rentVehicle(
-    startDate: string,
-    endDate: string,
-    insurance: boolean,
-    customerID: number,
-    vehicleID: number,
-  ): Promise<{ reservationsId: number } | null> {
+export default class VehicleController {
+  static async getAllVehicles(req: Request, res: Response) {
     try {
-      const query: string =
-        "INSERT INTO Reservations (StartDate, EndDate, Insurance, CustomerID, Vehicle)" +
-        "VALUES (?, ?, ?, ?, ?)";
-      const values = [startDate, endDate, insurance, customerID, vehicleID];
-      const [result]: any = await db.query(query, values);
-      return result.insertId ? { reservationsId: result.insertId } : null;
+      const vehicles = await VehicleService.getAllVehicles();
+      res.json(vehicles);
     } catch (error) {
-      console.error("Error creating reservation:", error);
-      throw error;
+      console.error(error);
+      res.status(500).send("Server error:" + error);
+    }
+  }
+
+  static async getAvailableVehicles(req: Request, res: Response) {
+    try {
+      const type: string = (req.query.type as string) ?? "";
+      const startDate: string = (req.query.startDate as string) ?? "";
+      const endDate: string = (req.query.endDate as string) ?? "";
+
+      const vehicles = await VehicleService.getAvailableVehicles(
+        type,
+        startDate,
+        endDate,
+      );
+      if (!vehicles) {
+        res.status(404).json({ error: "No cars found" });
+        return;
+      }
+      res.json(vehicles);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("Server error:" + error);
     }
   }
 }
-
-export default VehicleController;

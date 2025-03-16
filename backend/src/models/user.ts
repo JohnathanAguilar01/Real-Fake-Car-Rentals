@@ -1,4 +1,5 @@
 export type TUser = {
+  id: number;
   firstName: string;
   lastName: string;
   email: string;
@@ -8,6 +9,7 @@ export type TUser = {
 
 export class User {
   constructor(
+    public userId: number,
     public firstName: string,
     public lastName: string,
     public email: string,
