@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS Reservations(
   start_date DATE NOT NULL,
   end_date DATE NOT NULL,
   insurance BOOLEAN NOT NULL,
-  customer_id INT NOT NULL,
+  user_id INT NOT NULL,
   car_id INT NOT NULL,
   CONSTRAINT FK_UserReservation FOREIGN KEY (user_id)
   REFERENCES Users(user_id),

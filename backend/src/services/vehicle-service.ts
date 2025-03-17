@@ -29,14 +29,14 @@ export default class VehicleService {
     startDate: string,
     endDate: string,
     insurance: boolean,
-    customerID: number,
-    vehicleID: number,
+    userId: number,
+    carId: number,
   ): Promise<{ reservationsId: number } | null> {
     try {
       const query: string =
-        "INSERT INTO Reservations (start_date, end_date, insurance, customer_id, car_id)" +
+        "INSERT INTO Reservations (start_date, end_date, insurance, user_id, car_id)" +
         "VALUES (?, ?, ?, ?, ?)";
-      const values = [startDate, endDate, insurance, customerID, vehicleID];
+      const values = [startDate, endDate, insurance, userId, carId];
       const [result]: any = await db.query(query, values);
       return result.insertId ? { reservationsId: result.insertId } : null;
     } catch (error) {
