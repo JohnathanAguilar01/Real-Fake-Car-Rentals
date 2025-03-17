@@ -117,7 +117,21 @@ export default class UserService {
       return newUser;
     } catch (error) {
       console.error(error);
-      throw new Error("Error in inserting new user into databse");
+      if (
+        error instanceof Error &&
+        error.message === "PASSWORDS_DO_NOT_MATCH"
+      ) {
+        throw error; // Re-throw the specific password mismatch error.
+      } else if (
+        typeof error === "object" &&
+        error !== null &&
+        "code" in error &&
+        (error as any).code === "ER_DUP_ENTRY"
+      ) {
+        throw new Error("Username or email already exists");
+      } else {
+        throw new Error("Error in inserting new user into database");
+      }
     }
   }
 }

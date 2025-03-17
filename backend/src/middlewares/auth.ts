@@ -41,6 +41,14 @@ export const refreshsession = async (
 ): Promise<void> => {
   try {
     const sessionid = req.cookies.sessionid;
+    if (
+      !sessionid ||
+      typeof sessionid !== "string" ||
+      sessionid.trim() === ""
+    ) {
+      next();
+      return;
+    }
     const sessionExist = await UserService.sessionExists(sessionid);
 
     if (sessionExist) {
