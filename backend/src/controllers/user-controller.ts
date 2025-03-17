@@ -33,8 +33,15 @@ export default class UserController {
     const sessionid = req.cookies.sessionid;
     if (!sessionid) {
       res.status(400).json({ error: "No session id recived" });
+      return;
     }
-    res.clearCookie("sessionid");
-    res.sendStatus(200);
+    try {
+      await UserService.logout(sessionid);
+      res.clearCookie("sessionid");
+      res.sendStatus(200);
+    } catch (error) {
+      console.error("Logout error:", error);
+      res.status(500).send("Internal server error");
+    }
   }
 }

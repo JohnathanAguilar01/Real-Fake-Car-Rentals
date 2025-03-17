@@ -10,6 +10,7 @@ type Vehicle = {
   make: string;
   color: string;
   carType: string;
+  id?: number;
 };
 
 export default Vehicle;

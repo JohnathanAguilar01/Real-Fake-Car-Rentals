@@ -15,16 +15,19 @@ export const authCheck = async (
       typeof sessionid !== "string" ||
       sessionid.trim() === ""
     ) {
-      return res.status(401).send("Unauthorized: No session ID provided");
+      res.status(401).send("Unauthorized: No session ID provided");
+      return;
     }
 
     const exists: boolean = await UserService.sessionExists(sessionid);
     if (!exists) {
-      return res.status(401).send("Unauthorized: Invalid session ID");
+      res.status(401).send("Unauthorized: Invalid session ID");
+      return;
     }
     next();
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: "Internal Server Error" });
+    return;
   }
 };
