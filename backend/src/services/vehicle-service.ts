@@ -1,8 +1,9 @@
 import Vehicle from "../models/vehicle.js";
 import db from "../config/db.js";
+import { throws } from "assert";
 
 // biome-ignore lint/complexity/noStaticOnlyClass: This class follows OOP patterns for learning purposes
-class VehicleController {
+export default class VehicleService {
   static async getAllVehicles(): Promise<Vehicle[]> {
     const [result]: any = await db.query("SELECT * FROM Vehicles");
     return result;
@@ -30,14 +31,17 @@ class VehicleController {
     insurance: boolean,
     customerID: number,
     vehicleID: number,
-  ): Promise<{ vehicleId: number } | null> {
-    const query: string =
-      "INSERT INTO Reservations (StartDate, EndDate, Insurance, CustomerID, Vehicle)" +
-      "VALUES (?, ?, ?, ?, ?)";
-    const values = [startDate, endDate, insurance, customerID, vehicleID];
-    const [result]: any = await db.query(query, values);
-    return result.insertId ? { vehicleId: result.insertId } : null;
+  ): Promise<{ reservationsId: number } | null> {
+    try {
+      const query: string =
+        "INSERT INTO Reservations (StartDate, EndDate, Insurance, CustomerID, Vehicle)" +
+        "VALUES (?, ?, ?, ?, ?)";
+      const values = [startDate, endDate, insurance, customerID, vehicleID];
+      const [result]: any = await db.query(query, values);
+      return result.insertId ? { reservationsId: result.insertId } : null;
+    } catch (error) {
+      console.error("Error creating reservation:", error);
+      throw error;
+    }
   }
 }
-
-export default VehicleController;
