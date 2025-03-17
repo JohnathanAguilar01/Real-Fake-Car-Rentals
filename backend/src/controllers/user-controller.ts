@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import UserService from "../services/user-service.js";
-import { TUser } from "../models/user.js";
+import { TUser, User } from "../models/user.js";
 
 // biome-ignore lint/complexity/noStaticOnlyClass: This class follows OOP patterns for learning purposes
 export default class UserController {
@@ -25,7 +25,7 @@ export default class UserController {
       return;
     } catch (error) {
       console.error("Login error:", error);
-      res.status(500).send("Internal server error");
+      res.status(500).json({ error: "Internal server error" });
     }
   }
 
@@ -33,8 +33,45 @@ export default class UserController {
     const sessionid = req.cookies.sessionid;
     if (!sessionid) {
       res.status(400).json({ error: "No session id recived" });
+      return;
     }
-    res.clearCookie("sessionid");
-    res.sendStatus(200);
+    try {
+      await UserService.logout(sessionid);
+      res.clearCookie("sessionid");
+      res.sendStatus(200);
+    } catch (error) {
+      console.error("Logout error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  }
+
+  static async signup(req: Request, res: Response) {
+    try {
+      const { userInput, confirmPassword } = req.body as {
+        userInput: TUser;
+        confirmPassword: string;
+      };
+      const newUser: User = await UserService.signup(
+        userInput,
+        confirmPassword,
+      );
+      res.status(200).json({
+        firstName: newUser.firstName,
+        lastName: newUser.lastName,
+        email: newUser.email,
+        userName: newUser.userName,
+        id: newUser.id,
+      });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        if (error.message === "PASSWORDS_DO_NOT_MATCH") {
+          res.status(400).json({ error: "Passwords do not match" });
+          return;
+        }
+      }
+
+      console.error(error);
+      res.status(500).json({ error: "Internal server error" });
+    }
   }
 }
