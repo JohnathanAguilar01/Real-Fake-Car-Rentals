@@ -16,7 +16,7 @@ export class User {
     public email: string,
     public userName: string,
     public password: string,
-    public id?: number,
+    public id: number | null = null,
   ) {}
 
   static async hashPassword(password: string): Promise<string> {

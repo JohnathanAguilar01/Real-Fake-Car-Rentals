@@ -1,5 +1,5 @@
 import db from "../config/db.js";
-import { User } from "../models/user.js";
+import { TUser, User } from "../models/user.js";
 import { RowDataPacket } from "mysql2";
 import crypto from "crypto";
 import bcrypt from "bcrypt";
@@ -19,7 +19,7 @@ export default class UserService {
     return `${year}-${month}-${day}`;
   }
 
-  private static async createOrUpdateSession(
+  static async createOrUpdateSession(
     userId: number,
     inputSessionId: string | null = null,
   ): Promise<string> {
@@ -84,17 +84,14 @@ export default class UserService {
     return results.affectedRows;
   }
 
-  static async signup(
-    user: User,
-    confirmPassword: string,
-  ): Promise<{ userId: number } | null> {
-    if (user.password != confirmPassword) {
-      throw new Error("Both passwords do not match");
-    }
-
-    const newUser = await User.createWithHashPassword(user);
-
+  static async signup(user: TUser, confirmPassword: string): Promise<User> {
     try {
+      if (user.password !== confirmPassword) {
+        throw new Error("PASSWORDS_DO_NOT_MATCH");
+      }
+
+      const newUser = await User.createWithHashPassword(user);
+
       const query: string =
         "INSERT INTO Customers (FirstName, LastName, Email, UserName, Password)" +
         "VALUES (?, ?, ?, ?, ?)";
@@ -105,7 +102,8 @@ export default class UserService {
         newUser.userName,
         newUser.password,
       ]);
-      return results.insertId ? { userId: results.insertId } : null;
+      newUser.id = results.insertId;
+      return newUser;
     } catch (error) {
       console.error(error);
       throw new Error("Error in inserting new user into databse");
