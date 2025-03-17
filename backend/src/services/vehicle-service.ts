@@ -5,7 +5,7 @@ import { throws } from "assert";
 // biome-ignore lint/complexity/noStaticOnlyClass: This class follows OOP patterns for learning purposes
 export default class VehicleService {
   static async getAllVehicles(): Promise<Vehicle[]> {
-    const [result]: any = await db.query("SELECT * FROM Vehicles");
+    const [result]: any = await db.query("SELECT * FROM Cars");
     return result;
   }
 
@@ -15,12 +15,12 @@ export default class VehicleService {
     endDate: string,
   ): Promise<Vehicle[]> {
     const query: string =
-      "select CarID, Mileage, MPG, Price, CarYear, Model, Make, Color, CarType, VIN from Vehicles " +
-      "where CarType = ? and " +
-      "CarId not in " +
-      "(select Vehicle from Reservations " +
-      "where ? < EndDate and " +
-      "? > StartDate)";
+      "SELECT car_id, mileage, mpg, price, car_year, model, make, color, car_type, vin from Cars " +
+      "WHERE car_type = ? AND " +
+      "car_id NOT IN " +
+      "(SELECT car_id from Reservations " +
+      "WHERE ? < end_date AND " +
+      "? > start_date)";
     const [result]: any = await db.query(query, [type, startDate, endDate]);
     return result;
   }
@@ -34,7 +34,7 @@ export default class VehicleService {
   ): Promise<{ reservationsId: number } | null> {
     try {
       const query: string =
-        "INSERT INTO Reservations (StartDate, EndDate, Insurance, CustomerID, Vehicle)" +
+        "INSERT INTO Reservations (start_date, end_date, insurance, customer_id, car_id)" +
         "VALUES (?, ?, ?, ?, ?)";
       const values = [startDate, endDate, insurance, customerID, vehicleID];
       const [result]: any = await db.query(query, values);
