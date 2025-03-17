@@ -77,9 +77,9 @@ export default class UserService {
   }
 
   static async login(userId: number, password: string): Promise<string | null> {
-    const query = "SELECT Password FROM Customers WHERE user_id = ?";
+    const query = "SELECT password FROM Users WHERE user_id = ?";
     const [results]: [RowDataPacket[], any] = await db.execute(query, [userId]);
-    const storedHash = results[0].Password; // Notice capital P if it's case-sensitive
+    const storedHash = results[0].password;
 
     const isMatch = await bcrypt.compare(password, storedHash);
     if (isMatch) {
@@ -104,7 +104,7 @@ export default class UserService {
       const newUser = await User.createWithHashPassword(user);
 
       const query: string =
-        "INSERT INTO Customers (FirstName, LastName, Email, UserName, Password)" +
+        "INSERT INTO Users (first_name, last_name, email, username, password)" +
         "VALUES (?, ?, ?, ?, ?)";
       const [results]: any = await db.query(query, [
         newUser.firstName,
