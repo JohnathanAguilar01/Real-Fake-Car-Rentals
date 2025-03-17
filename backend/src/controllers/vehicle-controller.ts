@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import VehicleService from "../services/vehicle-service.js";
-import Utils from "../utility/utils.js";
+import VehicleService from "../services/vehicle-service";
+import Utils from "../utility/utils";
 
 export default class VehicleController {
   static async getAllVehicles(req: Request, res: Response) {

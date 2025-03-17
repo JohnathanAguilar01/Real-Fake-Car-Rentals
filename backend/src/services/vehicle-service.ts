@@ -1,6 +1,5 @@
-import Vehicle from "../models/vehicle.js";
-import db from "../config/db.js";
-import { throws } from "assert";
+import Vehicle from "../models/vehicle";
+import db from "../config/db";
 
 // biome-ignore lint/complexity/noStaticOnlyClass: This class follows OOP patterns for learning purposes
 export default class VehicleService {

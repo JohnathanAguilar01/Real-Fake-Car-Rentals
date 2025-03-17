@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import db from "../config/db.js";
-import UserService from "../services/user-service.js";
+import db from "../config/db";
+import UserService from "../services/user-service";
 
 // middleware to check if user is logged in
 export const authCheck = async (

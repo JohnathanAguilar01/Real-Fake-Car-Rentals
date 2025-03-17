@@ -3,14 +3,13 @@ type Vehicle = {
   mileage: number;
   mpg: number;
   price: number;
-  isActive: boolean;
-  licensePlate: string;
-  carYear: number;
+  is_active: number;
+  license_plate: string;
+  car_year: string;
   model: string;
   make: string;
   color: string;
-  carType: string;
-  id?: number;
+  car_type: string;
 };
 
 export default Vehicle;

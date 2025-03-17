@@ -1,5 +1,5 @@
 import express from "express";
-import VehicleController from "../controllers/vehicle-controller.js";
+import VehicleController from "../controllers/vehicle-controller";
 const router = express.Router();
 
 // Example: Fetch all users

@@ -1,5 +1,5 @@
-import db from "../config/db.js";
-import { TUser, User } from "../models/user.js";
+import db from "../config/db";
+import { TUser, User } from "../models/user";
 import { RowDataPacket } from "mysql2";
 import crypto from "crypto";
 import bcrypt from "bcrypt";

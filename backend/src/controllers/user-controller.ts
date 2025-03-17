@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import UserService from "../services/user-service.js";
-import { TUser, User } from "../models/user.js";
+import UserService from "../services/user-service";
+import { TUser, User } from "../models/user";
 
 // biome-ignore lint/complexity/noStaticOnlyClass: This class follows OOP patterns for learning purposes
 export default class UserController {
