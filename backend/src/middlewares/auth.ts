@@ -39,13 +39,19 @@ export const refreshsession = async (
   res: Response,
   next: NextFunction,
 ): Promise<void> => {
-  const sessionid = req.cookies.sessionid;
-  const sessionExist = await UserService.sessionExists(sessionid);
+  try {
+    const sessionid = req.cookies.sessionid;
+    const sessionExist = await UserService.sessionExists(sessionid);
 
-  if (sessionExist) {
-    const query: string = "SELECT user_id WHERE session_id = ?";
-    const [results]: any = db.query(query, [sessionid]);
-    UserService.createOrUpdateSession(results[0].user_id, sessionid);
+    if (sessionExist) {
+      const query: string = "SELECT user_id FROM Sessions WHERE session_id = ?";
+      const [results]: any = await db.query(query, [sessionid]);
+      await UserService.createOrUpdateSession(results[0].user_id, sessionid);
+    }
+    next();
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+    return;
   }
-  next();
 };

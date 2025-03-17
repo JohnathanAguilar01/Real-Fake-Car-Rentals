@@ -36,7 +36,13 @@ export default class UserService {
           userId,
           expireLogin,
         ]);
-        return results.insertId;
+
+        // Check if the insertion was successful
+        if (results.affectedRows !== 1) {
+          throw new Error("Failed to create new session");
+        }
+
+        return sessionId;
       }
       const query: string =
         "UPDATE Sessions SET expire_login = ?, last_login = CURRENT_DATE() WHERE session_id = ?";
@@ -44,7 +50,12 @@ export default class UserService {
         expireLogin,
         inputSessionId,
       ]);
-      return results.insertId;
+      // Check if the update was successful
+      if (results.affectedRows !== 1) {
+        throw new Error("Failed to update session");
+      }
+
+      return inputSessionId;
     } catch (error) {
       console.error("Database error: ", error);
       throw new Error("Error in database insert or update");
