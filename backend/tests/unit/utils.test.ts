@@ -1,4 +1,4 @@
-import { describe, expect, jest, test } from "@jest/globals";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import Utils from "../../src/utility/utils";
 
 describe("Testing utils", () => {

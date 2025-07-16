@@ -1,4 +1,4 @@
-import { describe, expect, jest, test, beforeEach } from "@jest/globals";
+import { describe, expect, jest, test } from "@jest/globals";
 import { Request, Response } from "express";
 import VehicleController from "../../src/controllers/vehicle-controller";
 import VehicleService from "../../src/services/vehicle-service";
