@@ -19,10 +19,10 @@ app.use(
 app.use(express.json());
 
 // Middleware to use Vehicles routes
-app.use("/vehicles", vehiclesRoutes);
+// app.use("/vehicles", vehiclesRoutes);
 
 // Middleware to use UserAuth routes
-app.use("/user", userRoutes);
+// app.use("/user", userRoutes);
 
 app.get("/", (req, res) => {
   res.send("Backend is running!");

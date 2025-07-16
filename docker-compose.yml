@@ -13,6 +13,7 @@ services:
       - ./react_frontend:/app
       - /app/node_modules
       - ./.env:/app/.env
+
   backend:
     build:
       context: ./backend
@@ -26,18 +27,28 @@ services:
     ports:
       - 5000:5000
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+
   db:
     image: mysql:latest
     container_name: car-rental-db
+    ports:
+      - 3306:3306
     secrets:
       - db-root-password
     volumes:
-      - db-data:/var/lib/mysql
+      - /var/lib/mysql
       - ./database:/docker-entrypoint-initdb.d
     environment:
       - MYSQL_DATABASE=Real_Fake_Car_Rentals
       - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db-root-password
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   seeder:
     build:
       context: ./
@@ -48,9 +59,9 @@ services:
       - ./database:/app/database # Persist the marker file
       - ./.env:/app/.env
     depends_on:
-      - db
-volumes:
-  db-data:
+      db:
+        condition: service_healthy
+
 secrets:
   db-root-password:
     file: ./.secrets/db-root-password.txt
