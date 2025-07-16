@@ -5,7 +5,6 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon --ext ts --exec tsx src/index.ts",
-    "test": "NODE_OPTIONS=\"$NODE_OPTIONS --experimental-vm-modules\" npx jest",
     "build": "tsc",
     "start": "node dist/index.js",
     "test": "vitest",
@@ -34,8 +33,6 @@
     "@typescript-eslint/eslint-plugin": "^8.26.1",
     "@typescript-eslint/parser": "^8.26.1",
     "@vitest/ui": "^3.2.4",
-    "eslint": "^9.22.0",
-    "globals": "^16.0.0",
     "cross-env": "^7.0.3",
     "eslint": "^9.22.0",
     "globals": "^16.0.0",
@@ -45,3 +42,5 @@
     "tsx": "^4.19.3",
     "typescript": "^5.8.2",
     "typescript-eslint": "^8.26.1"
+  }
+}
