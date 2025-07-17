@@ -4,7 +4,7 @@ import db from "../config/db";
 // biome-ignore lint/complexity/noStaticOnlyClass: This class follows OOP patterns for learning purposes
 export default class VehicleService {
   static async getAllVehicles(): Promise<Vehicle[]> {
-    const [result]: any = await db.query("SELECT * FROM Cars");
+    const result: any = await db.query("SELECT * FROM Cars");
     return result;
   }
 
