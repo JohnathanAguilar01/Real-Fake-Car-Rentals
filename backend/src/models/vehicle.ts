@@ -3,7 +3,7 @@ type Vehicle = {
   mileage: number;
   mpg: number;
   price: number;
-  is_active: number;
+  is_active: boolean;
   license_plate: string;
   car_year: string;
   model: string;

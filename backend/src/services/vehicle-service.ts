@@ -4,7 +4,7 @@ import db from "../config/db";
 // biome-ignore lint/complexity/noStaticOnlyClass: This class follows OOP patterns for learning purposes
 export default class VehicleService {
   static async getAllVehicles(): Promise<Vehicle[]> {
-    const result: any = await db.query("SELECT * FROM Cars");
+    const [result]: any = await db.query("SELECT * FROM Cars");
     return result;
   }
 
@@ -20,7 +20,7 @@ export default class VehicleService {
       "(SELECT car_id from Reservations " +
       "WHERE ? < end_date AND " +
       "? > start_date)";
-    const result: any = await db.query(query, [type, startDate, endDate]);
+    const [result]: any = await db.query(query, [type, startDate, endDate]);
     return result;
   }
 
@@ -36,8 +36,8 @@ export default class VehicleService {
         "INSERT INTO Reservations (start_date, end_date, insurance, user_id, car_id)" +
         "VALUES (?, ?, ?, ?, ?)";
       const values = [startDate, endDate, insurance, userId, carId];
-      const result: any = await db.query(query, values);
-      return { reservationsId: result.insertId };
+      const [result]: any = await db.query(query, values);
+      return result.insertId ? { reservationsId: result.insertId } : null;
     } catch (error) {
       console.error("Error creating reservation:", error);
       throw error;
