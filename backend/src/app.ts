@@ -4,8 +4,8 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 dotenv.config();
 // route imports
-import vehiclesRoutes from "./routes/vehicles-routes.js";
-import userRoutes from "./routes/user-routes.js";
+import vehiclesRoutes from "./routes/vehicles-routes";
+import userRoutes from "./routes/user-routes";
 
 const app = express();
 
