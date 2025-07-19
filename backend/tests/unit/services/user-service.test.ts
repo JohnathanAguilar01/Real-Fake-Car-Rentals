@@ -63,5 +63,34 @@ describe("UserService", () => {
       );
       expect(result).toBe(mockSessionId);
     });
+
+    it("should handle database errors", async () => {
+      const userId = 1;
+      const mockError = new Error("Database connection failed");
+
+      mockDb.query.mockRejectedValue(mockError);
+      await expect(UserService.createOrUpdateSession(userId)).rejects.toThrow(
+        "Error in database insert or update",
+      );
+    });
+  });
+
+  describe("sessionExists", () => {
+    it("should check database for session Id that exist and return true", async () => {
+      const mockSessionId = "mock-session-id";
+      const mockQueryResults = [{ count: 1 }];
+      const queryText =
+        "SELECT COUNT(*) AS count FROM Sessions WHERE session_id = ?";
+
+      mockDb.query.mockResolvedValue([mockQueryResults]);
+
+      const results = await UserService.sessionExists(mockSessionId);
+
+      expect(mockDb.query).toHaveBeenCalledWith(
+        expect.stringContaining(queryText),
+        expect.arrayContaining([mockSessionId]),
+      );
+      expect(results).toBe(true);
+    });
   });
 });
