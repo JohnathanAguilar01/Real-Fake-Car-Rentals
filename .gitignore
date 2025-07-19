@@ -3,3 +3,4 @@ node_modules/
 dist/
 .secrets/
 database/.seeds_run
+backend/coverage
