@@ -120,4 +120,21 @@ describe("UserService", () => {
       expect(result).toBe(false);
     });
   });
+
+  describe("logout", () => {
+    it("should return 1 for the deleted session", async () => {
+      const mockSessionId = "mock-session-id";
+      const mockQueryResults = { affectedRows: 1 };
+      const queryText = "DELETE FROM Sessions WHERE session_id = ?";
+
+      mockDb.query.mockResolvedValue([mockQueryResults]);
+
+      const result = await UserService.logout(mockSessionId);
+      expect(mockDb.query).toHaveBeenCalledWith(
+        expect.stringContaining(queryText),
+        expect.arrayContaining([mockSessionId]),
+      );
+      expect(result).toBe(1);
+    });
+  });
 });
