@@ -121,6 +121,63 @@ describe("UserService", () => {
     });
   });
 
+  describe("login", () => {
+    it("should take user id and password and check that it matches and return with session id", async () => {
+      const userId = 1;
+      const password = "password";
+      const mockPasswordHashed = "hashed-password";
+      const mockDatabasePasswordQuery = [{ password: mockPasswordHashed }];
+      const mockBcryptPasswordCompare = true;
+      const mockSessionId = "mock-session-id";
+      const queryText = "SELECT password FROM Users WHERE user_id = ?";
+
+      mockDb.execute.mockResolvedValue([mockDatabasePasswordQuery]);
+      mockBcrypt.compare.mockResolvedValue(mockBcryptPasswordCompare);
+
+      const spyCreateOrUpdateSession = vi
+        .spyOn(UserService, "createOrUpdateSession")
+        .mockResolvedValue(mockSessionId);
+
+      const result = await UserService.login(userId, password);
+
+      expect(mockDb.execute).toHaveBeenCalledWith(
+        expect.stringContaining(queryText),
+        expect.arrayContaining([userId]),
+      );
+      expect(mockBcrypt.compare).toHaveBeenCalledWith(
+        expect.stringContaining(password),
+        expect.stringContaining(mockPasswordHashed),
+      );
+      expect(UserService.createOrUpdateSession).toHaveBeenCalledWith(userId);
+      expect(result).toBe(mockSessionId);
+    });
+
+    it("should take user id and password and check that it dose not matches and return null", async () => {
+      const userId = 1;
+      const password = "password";
+      const mockPasswordHashed = "hashed-password";
+      const mockDatabasePasswordQuery = [{ password: mockPasswordHashed }];
+      const mockBcryptPasswordCompare = false;
+      const mockSessionId = "mock-session-id";
+      const queryText = "SELECT password FROM Users WHERE user_id = ?";
+
+      mockDb.execute.mockResolvedValue([mockDatabasePasswordQuery]);
+      mockBcrypt.compare.mockResolvedValue(mockBcryptPasswordCompare);
+
+      const result = await UserService.login(userId, password);
+
+      expect(mockDb.execute).toHaveBeenCalledWith(
+        expect.stringContaining(queryText),
+        expect.arrayContaining([userId]),
+      );
+      expect(mockBcrypt.compare).toHaveBeenCalledWith(
+        expect.stringContaining(password),
+        expect.stringContaining(mockPasswordHashed),
+      );
+      expect(result).toBe(null);
+    });
+  });
+
   describe("logout", () => {
     it("should return 1 for the deleted session", async () => {
       const mockSessionId = "mock-session-id";
