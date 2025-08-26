@@ -98,7 +98,7 @@ export default class UserService {
   static async signup(user: TUser, confirmPassword: string): Promise<User> {
     try {
       if (user.password !== confirmPassword) {
-        throw new Error("PASSWORDS_DO_NOT_MATCH");
+        throw new Error("Passwords Do Not Match");
       }
 
       const newUser = await User.createWithHashPassword(user);

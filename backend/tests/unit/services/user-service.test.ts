@@ -7,12 +7,10 @@ import crypto from "crypto";
 
 // Mock dependencies
 vi.mock("../../../src/config/db.ts");
-vi.mock("../../../src/models/user.ts");
 vi.mock("bcrypt");
 vi.mock("crypto");
 
 const mockDb = vi.mocked(db);
-const mockUser = vi.mocked(User);
 const mockBcrypt = vi.mocked(bcrypt);
 const mockCrypto = vi.mocked(crypto);
 
@@ -192,6 +190,62 @@ describe("UserService", () => {
         expect.arrayContaining([mockSessionId]),
       );
       expect(result).toBe(1);
+    });
+  });
+
+  describe("signup", () => {
+    it("should create a new user, insert into data base, and return user", async () => {
+      const inputedConfirmPassword = "password";
+      const mockDbQueryResults = 29;
+      const inputedUser = {
+        firstName: "john",
+        lastName: "doe",
+        email: "john.doe@gmail.com",
+        userName: "john_doe",
+        password: "password",
+      };
+      const mockNewUser = {
+        firstName: "john",
+        lastName: "doe",
+        email: "john.doe@gmail.com",
+        userName: "john_doe",
+        password: "hashedPassword",
+        id: null,
+      };
+      const resultUser = {
+        firstName: "john",
+        lastName: "doe",
+        email: "john.doe@gmail.com",
+        userName: "john_doe",
+        password: "hashedPassword",
+        id: 29,
+      };
+      const queryText =
+        "INSERT INTO Users (first_name, last_name, email, username, password)";
+      const createWithHashedPasswordSpy = vi
+        .spyOn(User, "createWithHashPassword")
+        .mockResolvedValue(mockNewUser);
+      mockDb.query.mockReturnValue([mockDbQueryResults]);
+
+      const results = await UserService.signup(
+        inputedUser,
+        inputedConfirmPassword,
+      );
+
+      expect(createWithHashedPasswordSpy).toHaveBeenCalledWith(
+        expect.objectContaining(inputedUser),
+      );
+      expect(mockDb.query).toHaveBeenCalledWith(
+        expect.stringContaining(queryText),
+        expect.arrayContaining([
+          mockNewUser.firstName,
+          mockNewUser.lastName,
+          mockNewUser.email,
+          mockNewUser.userName,
+          mockNewUser.password,
+        ]),
+      );
+      expect(results).toBe(resultUser);
     });
   });
 });
