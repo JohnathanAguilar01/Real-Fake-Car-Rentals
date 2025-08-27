@@ -40,7 +40,26 @@ describe("UserService", () => {
         expect.stringContaining("INSERT INTO Sessions"),
         expect.arrayContaining([mockSessionId, userId, expect.any(String)]),
       );
+
       expect(result).toBe(mockSessionId);
+    });
+
+    it("should throw error if inputSessionId is null but fails to insert into database", async () => {
+      const userId = 1;
+      const mockSessionId = "mock-session-id";
+      const mockQueryResults = { affectedRows: 0 };
+
+      mockCrypto.randomUUID.mockReturnValue(mockSessionId);
+      mockDb.query.mockResolvedValue([mockQueryResults]);
+
+      await expect(UserService.createOrUpdateSession(userId)).rejects.toThrow(
+        "Error in database insert or update",
+      );
+      expect(mockCrypto.randomUUID).toHaveBeenCalledOnce();
+      expect(mockDb.query).toHaveBeenCalledWith(
+        expect.stringContaining("INSERT INTO Sessions"),
+        expect.arrayContaining([mockSessionId, userId, expect.any(String)]),
+      );
     });
 
     it("should update existing session when inpuSessionId is provided", async () => {
@@ -60,6 +79,23 @@ describe("UserService", () => {
         expect.arrayContaining([expect.any(String), mockSessionId]),
       );
       expect(result).toBe(mockSessionId);
+    });
+
+    it("should throw error if inputSessionId is provided but fails to insert into database", async () => {
+      const userId = 1;
+      const mockSessionId = "existing-session-id";
+      const mockQueryResults = { affectedRows: 0 };
+
+      mockDb.query.mockResolvedValue([mockQueryResults]);
+
+      await expect(
+        UserService.createOrUpdateSession(userId, mockSessionId),
+      ).rejects.toThrow("Error in database insert or update");
+
+      expect(mockDb.query).toHaveBeenCalledWith(
+        expect.stringContaining("UPDATE Sessions SET expire_login"),
+        expect.arrayContaining([expect.any(String), mockSessionId]),
+      );
     });
 
     it("should handle database errors", async () => {
@@ -247,5 +283,62 @@ describe("UserService", () => {
       );
       expect(results).toEqual(resultUser);
     });
+
+    it("should throw error of password do no pass", async () => {
+      const inputedConfirmPassword = "password123";
+      const inputedUser = {
+        firstName: "john",
+        lastName: "doe",
+        email: "john.doe@gmail.com",
+        userName: "john_doe",
+        password: "password",
+      };
+
+      await expect(
+        UserService.signup(inputedUser, inputedConfirmPassword),
+      ).rejects.toThrow("Passwords Do Not Match");
+    });
+  });
+
+  it("should throw 'Username or email already exists' if DB returns ER_DUP_ENTRY", async () => {
+    const mockConfirmPassword = "password";
+    const mockUser = {
+      firstName: "John",
+      lastName: "Doe",
+      email: "john@example.com",
+      userName: "johndoe",
+      password: "password",
+    };
+
+    vi.mocked(User).createWithHashPassword = vi
+      .fn()
+      .mockResolvedValue(mockUser);
+
+    mockDb.query.mockRejectedValue({ code: "ER_DUP_ENTRY" });
+
+    await expect(
+      UserService.signup(mockUser, mockConfirmPassword),
+    ).rejects.toThrow("Username or email already exists");
+  });
+
+  it("should throw 'Username or email already exists' if DB returns any other error", async () => {
+    const mockConfirmPassword = "password";
+    const mockUser = {
+      firstName: "John",
+      lastName: "Doe",
+      email: "john@example.com",
+      userName: "johndoe",
+      password: "password",
+    };
+
+    vi.mocked(User).createWithHashPassword = vi
+      .fn()
+      .mockResolvedValue(mockUser);
+
+    mockDb.query.mockRejectedValue({ code: "random error" });
+
+    await expect(
+      UserService.signup(mockUser, mockConfirmPassword),
+    ).rejects.toThrow("Error in inserting new user into database");
   });
 });

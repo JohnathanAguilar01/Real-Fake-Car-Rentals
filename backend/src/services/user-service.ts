@@ -119,7 +119,7 @@ export default class UserService {
       console.error(error);
       if (
         error instanceof Error &&
-        error.message === "PASSWORDS_DO_NOT_MATCH"
+        error.message === "Passwords Do Not Match"
       ) {
         throw error; // Re-throw the specific password mismatch error.
       } else if (
