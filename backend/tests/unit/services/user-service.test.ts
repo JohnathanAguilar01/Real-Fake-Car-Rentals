@@ -7,12 +7,10 @@ import crypto from "crypto";
 
 // Mock dependencies
 vi.mock("../../../src/config/db.ts");
-vi.mock("../../../src/models/user.ts");
 vi.mock("bcrypt");
 vi.mock("crypto");
 
 const mockDb = vi.mocked(db);
-const mockUser = vi.mocked(User);
 const mockBcrypt = vi.mocked(bcrypt);
 const mockCrypto = vi.mocked(crypto);
 
@@ -42,7 +40,26 @@ describe("UserService", () => {
         expect.stringContaining("INSERT INTO Sessions"),
         expect.arrayContaining([mockSessionId, userId, expect.any(String)]),
       );
+
       expect(result).toBe(mockSessionId);
+    });
+
+    it("should throw error if inputSessionId is null but fails to insert into database", async () => {
+      const userId = 1;
+      const mockSessionId = "mock-session-id";
+      const mockQueryResults = { affectedRows: 0 };
+
+      mockCrypto.randomUUID.mockReturnValue(mockSessionId);
+      mockDb.query.mockResolvedValue([mockQueryResults]);
+
+      await expect(UserService.createOrUpdateSession(userId)).rejects.toThrow(
+        "Error in database insert or update",
+      );
+      expect(mockCrypto.randomUUID).toHaveBeenCalledOnce();
+      expect(mockDb.query).toHaveBeenCalledWith(
+        expect.stringContaining("INSERT INTO Sessions"),
+        expect.arrayContaining([mockSessionId, userId, expect.any(String)]),
+      );
     });
 
     it("should update existing session when inpuSessionId is provided", async () => {
@@ -63,5 +80,265 @@ describe("UserService", () => {
       );
       expect(result).toBe(mockSessionId);
     });
+
+    it("should throw error if inputSessionId is provided but fails to insert into database", async () => {
+      const userId = 1;
+      const mockSessionId = "existing-session-id";
+      const mockQueryResults = { affectedRows: 0 };
+
+      mockDb.query.mockResolvedValue([mockQueryResults]);
+
+      await expect(
+        UserService.createOrUpdateSession(userId, mockSessionId),
+      ).rejects.toThrow("Error in database insert or update");
+
+      expect(mockDb.query).toHaveBeenCalledWith(
+        expect.stringContaining("UPDATE Sessions SET expire_login"),
+        expect.arrayContaining([expect.any(String), mockSessionId]),
+      );
+    });
+
+    it("should handle database errors", async () => {
+      const userId = 1;
+      const mockError = new Error("Database connection failed");
+
+      mockDb.query.mockRejectedValue(mockError);
+      await expect(UserService.createOrUpdateSession(userId)).rejects.toThrow(
+        "Error in database insert or update",
+      );
+    });
+  });
+
+  describe("sessionExists", () => {
+    it("should check database for session Id that exist and return true", async () => {
+      const mockSessionId = "mock-session-id";
+      const mockQueryResults = [{ count: 1 }];
+      const queryText =
+        "SELECT COUNT(*) AS count FROM Sessions WHERE session_id = ?";
+
+      mockDb.query.mockResolvedValue([mockQueryResults]);
+
+      const results = await UserService.sessionExists(mockSessionId);
+
+      expect(mockDb.query).toHaveBeenCalledWith(
+        expect.stringContaining(queryText),
+        expect.arrayContaining([mockSessionId]),
+      );
+      expect(results).toBe(true);
+    });
+
+    it("should check database for session Id that dose not exist and return false", async () => {
+      const mockSessionId = "mock-session-id";
+      const mockQueryResults = [{ count: 0 }];
+      const queryText =
+        "SELECT COUNT(*) AS count FROM Sessions WHERE session_id = ?";
+
+      mockDb.query.mockResolvedValue([mockQueryResults]);
+
+      const results = await UserService.sessionExists(mockSessionId);
+
+      expect(mockDb.query).toHaveBeenCalledWith(
+        expect.stringContaining(queryText),
+        expect.arrayContaining([mockSessionId]),
+      );
+      expect(results).toBe(false);
+    });
+
+    it("should handle database errors and return false", async () => {
+      const mockSessionId = "mock-session-id";
+      const mockError = new Error("Database connection failed");
+
+      mockDb.query.mockRejectedValue(mockError);
+
+      const result = await UserService.sessionExists(mockSessionId);
+      expect(result).toBe(false);
+    });
+  });
+
+  describe("login", () => {
+    it("should take user id and password and check that it matches and return with session id", async () => {
+      const userId = 1;
+      const password = "password";
+      const mockPasswordHashed = "hashed-password";
+      const mockDatabasePasswordQuery = [{ password: mockPasswordHashed }];
+      const mockBcryptPasswordCompare = true;
+      const mockSessionId = "mock-session-id";
+      const queryText = "SELECT password FROM Users WHERE user_id = ?";
+
+      mockDb.execute.mockResolvedValue([mockDatabasePasswordQuery]);
+      mockBcrypt.compare.mockResolvedValue(mockBcryptPasswordCompare);
+
+      const spyCreateOrUpdateSession = vi
+        .spyOn(UserService, "createOrUpdateSession")
+        .mockResolvedValue(mockSessionId);
+
+      const result = await UserService.login(userId, password);
+
+      expect(mockDb.execute).toHaveBeenCalledWith(
+        expect.stringContaining(queryText),
+        expect.arrayContaining([userId]),
+      );
+      expect(mockBcrypt.compare).toHaveBeenCalledWith(
+        expect.stringContaining(password),
+        expect.stringContaining(mockPasswordHashed),
+      );
+      expect(UserService.createOrUpdateSession).toHaveBeenCalledWith(userId);
+      expect(result).toBe(mockSessionId);
+    });
+
+    it("should take user id and password and check that it dose not matches and return null", async () => {
+      const userId = 1;
+      const password = "password";
+      const mockPasswordHashed = "hashed-password";
+      const mockDatabasePasswordQuery = [{ password: mockPasswordHashed }];
+      const mockBcryptPasswordCompare = false;
+      const mockSessionId = "mock-session-id";
+      const queryText = "SELECT password FROM Users WHERE user_id = ?";
+
+      mockDb.execute.mockResolvedValue([mockDatabasePasswordQuery]);
+      mockBcrypt.compare.mockResolvedValue(mockBcryptPasswordCompare);
+
+      const result = await UserService.login(userId, password);
+
+      expect(mockDb.execute).toHaveBeenCalledWith(
+        expect.stringContaining(queryText),
+        expect.arrayContaining([userId]),
+      );
+      expect(mockBcrypt.compare).toHaveBeenCalledWith(
+        expect.stringContaining(password),
+        expect.stringContaining(mockPasswordHashed),
+      );
+      expect(result).toBe(null);
+    });
+  });
+
+  describe("logout", () => {
+    it("should return 1 for the deleted session", async () => {
+      const mockSessionId = "mock-session-id";
+      const mockQueryResults = { affectedRows: 1 };
+      const queryText = "DELETE FROM Sessions WHERE session_id = ?";
+
+      mockDb.query.mockResolvedValue([mockQueryResults]);
+
+      const result = await UserService.logout(mockSessionId);
+      expect(mockDb.query).toHaveBeenCalledWith(
+        expect.stringContaining(queryText),
+        expect.arrayContaining([mockSessionId]),
+      );
+      expect(result).toBe(1);
+    });
+  });
+
+  describe("signup", () => {
+    it("should create a new user, insert into data base, and return user", async () => {
+      const inputedConfirmPassword = "password";
+      const mockResult = { insertId: 29 };
+      const inputedUser = {
+        firstName: "john",
+        lastName: "doe",
+        email: "john.doe@gmail.com",
+        userName: "john_doe",
+        password: "password",
+      };
+      const mockNewUser = {
+        firstName: "john",
+        lastName: "doe",
+        email: "john.doe@gmail.com",
+        userName: "john_doe",
+        password: "hashedPassword",
+        id: null,
+      };
+      const resultUser = {
+        firstName: "john",
+        lastName: "doe",
+        email: "john.doe@gmail.com",
+        userName: "john_doe",
+        password: "hashedPassword",
+        id: 29,
+      };
+      const queryText =
+        "INSERT INTO Users (first_name, last_name, email, username, password)";
+      const createWithHashedPasswordSpy = vi
+        .spyOn(User, "createWithHashPassword")
+        .mockResolvedValue(mockNewUser);
+      mockDb.query.mockResolvedValue([mockResult]);
+
+      const results = await UserService.signup(
+        inputedUser,
+        inputedConfirmPassword,
+      );
+
+      expect(createWithHashedPasswordSpy).toHaveBeenCalledWith(
+        expect.objectContaining(inputedUser),
+      );
+      expect(mockDb.query).toHaveBeenCalledWith(
+        expect.stringContaining(queryText),
+        expect.arrayContaining([
+          mockNewUser.firstName,
+          mockNewUser.lastName,
+          mockNewUser.email,
+          mockNewUser.userName,
+          mockNewUser.password,
+        ]),
+      );
+      expect(results).toEqual(resultUser);
+    });
+
+    it("should throw error of password do no pass", async () => {
+      const inputedConfirmPassword = "password123";
+      const inputedUser = {
+        firstName: "john",
+        lastName: "doe",
+        email: "john.doe@gmail.com",
+        userName: "john_doe",
+        password: "password",
+      };
+
+      await expect(
+        UserService.signup(inputedUser, inputedConfirmPassword),
+      ).rejects.toThrow("Passwords Do Not Match");
+    });
+  });
+
+  it("should throw 'Username or email already exists' if DB returns ER_DUP_ENTRY", async () => {
+    const mockConfirmPassword = "password";
+    const mockUser = {
+      firstName: "John",
+      lastName: "Doe",
+      email: "john@example.com",
+      userName: "johndoe",
+      password: "password",
+    };
+
+    vi.mocked(User).createWithHashPassword = vi
+      .fn()
+      .mockResolvedValue(mockUser);
+
+    mockDb.query.mockRejectedValue({ code: "ER_DUP_ENTRY" });
+
+    await expect(
+      UserService.signup(mockUser, mockConfirmPassword),
+    ).rejects.toThrow("Username or email already exists");
+  });
+
+  it("should throw 'Username or email already exists' if DB returns any other error", async () => {
+    const mockConfirmPassword = "password";
+    const mockUser = {
+      firstName: "John",
+      lastName: "Doe",
+      email: "john@example.com",
+      userName: "johndoe",
+      password: "password",
+    };
+
+    vi.mocked(User).createWithHashPassword = vi
+      .fn()
+      .mockResolvedValue(mockUser);
+
+    mockDb.query.mockRejectedValue({ code: "random error" });
+
+    await expect(
+      UserService.signup(mockUser, mockConfirmPassword),
+    ).rejects.toThrow("Error in inserting new user into database");
   });
 });

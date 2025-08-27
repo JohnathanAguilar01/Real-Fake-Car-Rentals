@@ -98,7 +98,7 @@ export default class UserService {
   static async signup(user: TUser, confirmPassword: string): Promise<User> {
     try {
       if (user.password !== confirmPassword) {
-        throw new Error("PASSWORDS_DO_NOT_MATCH");
+        throw new Error("Passwords Do Not Match");
       }
 
       const newUser = await User.createWithHashPassword(user);
@@ -119,7 +119,7 @@ export default class UserService {
       console.error(error);
       if (
         error instanceof Error &&
-        error.message === "PASSWORDS_DO_NOT_MATCH"
+        error.message === "Passwords Do Not Match"
       ) {
         throw error; // Re-throw the specific password mismatch error.
       } else if (
