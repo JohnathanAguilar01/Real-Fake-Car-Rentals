@@ -196,7 +196,7 @@ describe("UserService", () => {
   describe("signup", () => {
     it("should create a new user, insert into data base, and return user", async () => {
       const inputedConfirmPassword = "password";
-      const mockDbQueryResults = 29;
+      const mockResult = { insertId: 29 };
       const inputedUser = {
         firstName: "john",
         lastName: "doe",
@@ -225,7 +225,7 @@ describe("UserService", () => {
       const createWithHashedPasswordSpy = vi
         .spyOn(User, "createWithHashPassword")
         .mockResolvedValue(mockNewUser);
-      mockDb.query.mockReturnValue([mockDbQueryResults]);
+      mockDb.query.mockResolvedValue([mockResult]);
 
       const results = await UserService.signup(
         inputedUser,
@@ -245,7 +245,7 @@ describe("UserService", () => {
           mockNewUser.password,
         ]),
       );
-      expect(results).toBe(resultUser);
+      expect(results).toEqual(resultUser);
     });
   });
 });
