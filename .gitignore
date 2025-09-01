@@ -4,3 +4,4 @@ dist/
 .secrets/
 database/.seeds_run
 backend/coverage
+.idea/
