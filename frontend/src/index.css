@@ -3,6 +3,28 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@layer base {
+  @font-face {
+    font-family: "Archivo";
+    src: url("/src/fonts/Archivo-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: "Archivo Black";
+    src: url("/src/fonts/Archivo-Black.ttf") format("truetype");
+    font-weight: 900;
+    font-style: normal;
+  }
+}
+
+@theme {
+  --color-figmaprimary: #465d91;
+  --color-figmasecondary: #1a1b20;
+  --color-figmabackground: #faf8ff;
+}
+
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
